@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('suffix_name');
             $table->date('birthdate');
             $table->enum('gender', ['M', 'F']);
+            $table->string('contact_number', 13);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

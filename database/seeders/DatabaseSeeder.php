@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             LibSuffixNameSeeder::class,
             LibAcademicProgramSeeder::class,
             LibYearLevelSeeder::class,
-            LibAverageMonthlyIncomeSeeder::class
+            LibAverageMonthlyIncomeSeeder::class,
+            LibSchoolSeeder::class
         ]);
     }
 }

@@ -20,6 +20,6 @@ class LibYearLevelSeeder extends Seeder
             ['id' => 4, 'desc' => 'Fourth Year'],
             ['id' => 5, 'desc' => 'Fifth Year'],
             ['id' => 6, 'desc' => 'Sixth Year'],
-        ], ['code']);
+        ], ['id']);
     }
 }

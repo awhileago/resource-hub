@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Library\LibAcademicProgramResource;
+use App\Models\Library\LibAcademicProgram;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LibAcademicProgramController extends Controller
 {
@@ -12,7 +15,11 @@ class LibAcademicProgramController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(LibAcademicProgram::class)
+            ->defaultSort('desc')
+            ->allowedSorts('desc');
+
+        return LibAcademicProgramResource::collection($query->get());
     }
 
     /**
@@ -26,9 +33,13 @@ class LibAcademicProgramController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LibAcademicProgram $program)
     {
-        //
+        $query = LibAcademicProgram::where('id', $program->id);
+        $data = QueryBuilder::for($query)
+            ->first();
+
+        return new LibAcademicProgramResource($data);
     }
 
     /**

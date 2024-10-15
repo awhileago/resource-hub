@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Library\LibAverageMonthlyIncomeResource;
+use App\Models\Library\LibAverageMonthlyIncome;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LibAverageMonthlyIncomeController extends Controller
 {
@@ -12,7 +15,11 @@ class LibAverageMonthlyIncomeController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(LibAverageMonthlyIncome::class)
+            ->defaultSort('id')
+            ->allowedSorts('id');
+
+        return LibAverageMonthlyIncomeResource::collection($query->get());
     }
 
     /**
@@ -26,9 +33,13 @@ class LibAverageMonthlyIncomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LibAverageMonthlyIncome $monthlyIncome)
     {
-        //
+        $query = LibAverageMonthlyIncome::where('id', $monthlyIncome->id);
+        $data = QueryBuilder::for($query)
+            ->first();
+
+        return new LibAverageMonthlyIncomeResource($data);
     }
 
     /**

@@ -1,25 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Library;
+namespace App\Http\Controllers\PSGC;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Library\LibSchoolResource;
-use App\Models\Library\LibSchool;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
 
-class LibSchoolController extends Controller
+class RegionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = QueryBuilder::for(LibSchool::class)
-            ->defaultSort('desc')
-            ->allowedSorts('desc');
-
-        return LibSchoolResource::collection($query->get());
+        //
     }
 
     /**
@@ -33,13 +26,9 @@ class LibSchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LibSchool $school)
+    public function show(string $id)
     {
-        $query = LibSchool::where('id', $school->id);
-        $data = QueryBuilder::for($query)
-            ->first();
-
-        return new LibSchoolResource($data);
+        //
     }
 
     /**

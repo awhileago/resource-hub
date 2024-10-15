@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Library\LibYearLevelResource;
+use App\Models\Library\LibYearLevel;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LibYearLevelController extends Controller
 {
@@ -12,7 +15,11 @@ class LibYearLevelController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(LibYearLevel::class)
+            ->defaultSort('id')
+            ->allowedSorts('id');
+
+        return LibYearLevelResource::collection($query->get());
     }
 
     /**
@@ -26,9 +33,13 @@ class LibYearLevelController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LibYearLevel $yearLevel)
     {
-        //
+        $query = LibYearLevel::where('id', $yearLevel->id);
+        $data = QueryBuilder::for($query)
+            ->first();
+
+        return new LibYearLevelResource($data);
     }
 
     /**

@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Library\LibSuffixNameResource;
+use App\Models\Library\LibSuffixName;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class LibSuffixNameController extends Controller
 {
@@ -12,7 +15,11 @@ class LibSuffixNameController extends Controller
      */
     public function index()
     {
-        //
+        $query = QueryBuilder::for(LibSuffixName::class)
+            ->defaultSort('sequence')
+            ->allowedSorts('sequence');
+
+        return LibSuffixNameResource::collection($query->get());
     }
 
     /**
@@ -26,9 +33,13 @@ class LibSuffixNameController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(LibSuffixName $suffixName)
     {
-        //
+        $query = LibSuffixName::where('code', $suffixName->code);
+        $data = QueryBuilder::for($query)
+            ->first();
+
+        return new LibSuffixNameResource($data);
     }
 
     /**

@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Library;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Library\LibSchoolResource;
-use App\Models\Library\LibSchool;
+use App\Http\Resources\Library\LibEducationLevelResource;
+use App\Models\Library\LibEducationLevel;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class LibSchoolController extends Controller
+class LibEducationLevelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = QueryBuilder::for(LibSchool::class)
-            ->defaultSort('desc')
-            ->allowedSorts('desc');
+        $query = QueryBuilder::for(LibEducationLevel::class)
+            ->defaultSort('id')
+            ->allowedSorts('id');
 
-        return LibSchoolResource::collection($query->get());
+        return LibEducationLevelResource::collection($query->get());
     }
 
     /**
@@ -33,13 +33,13 @@ class LibSchoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(LibSchool $school)
+    public function show(LibEducationLevel $educationLevel)
     {
-        $query = LibSchool::where('id', $school->id);
+        $query = LibEducationLevel::where('id', $educationLevel->id);
         $data = QueryBuilder::for($query)
             ->first();
 
-        return new LibSchoolResource($data);
+        return new LibEducationLevelResource($data);
     }
 
     /**

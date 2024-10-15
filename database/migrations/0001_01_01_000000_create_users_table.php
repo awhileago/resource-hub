@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary()->index();
             $table->string('last_name');
             $table->string('first_name');
-            $table->string('middle_name');
+            $table->string('middle_name')->nullable();
             $table->string('suffix_name');
             $table->date('birthdate');
             $table->enum('gender', ['M', 'F']);

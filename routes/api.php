@@ -43,3 +43,14 @@ Route::prefix('v1/psgc')->group(function () {
     Route::get('barangays', [\App\Http\Controllers\PSGC\BarangayController::class, 'index'])->name('barangay.index');
     Route::get('barangays/{barangay}', [\App\Http\Controllers\PSGC\BarangayController::class, 'show'])->name('barangay.show');
 });
+
+Route::prefix('v1')->group(function () {
+    Route::controller(\App\Http\Controllers\Info\ParentInformationController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('parent-information', 'index')->name('parent-information.index');
+            Route::get('parent-information/{parentInformation}', 'show')->name('parent-information.show');
+            Route::post('parent-information', 'store')->name('parent-information.store');
+            Route::put('parent-information/{parentInformation}', 'update')->name('parent-information.update');
+        });
+});

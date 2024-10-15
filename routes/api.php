@@ -45,6 +45,15 @@ Route::prefix('v1/psgc')->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
+    Route::controller(\App\Http\Controllers\Info\UserInformationController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('user-information', 'index')->name('user-information.index');
+            Route::get('user-information/{userInformation}', 'show')->name('user-information.show');
+            Route::post('user-information', 'store')->name('user-information.store');
+            Route::put('user-information/{userInformation}', 'update')->name('user-information.update');
+        });
+
     Route::controller(\App\Http\Controllers\Info\ParentInformationController::class)
         ->middleware('auth:api')
         ->group(function () {

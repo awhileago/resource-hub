@@ -47,7 +47,7 @@ return [
 
         'psgc' => [
             'driver' => 'local',
-            'root' => storage_path('app/psgc'),
+            'root' => storage_path('psgc'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'private',
             'throw' => false,

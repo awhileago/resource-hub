@@ -42,7 +42,7 @@ class ParsePSGCFileCommand extends Command
                 'Please choose the file to upload',
                 Storage::disk('psgc')->files(),
             );
-            $filePath = storage_path('app/psgc/'.$fileName);
+            $filePath = storage_path('psgc/'.$fileName);
             $start = now();
             $this->info("Reading $fileName file...");
             $this->truncateTables();

@@ -34,7 +34,7 @@ class PostingApplicationController extends Controller
      */
     public function store(PostingApplicationRequest $request)
     {
-        $data = PostingApplication::query()->updateOrCreate(['posting_id' => $request->posting_id, 'user_id' => auth()->id], $request->validated());
+        $data = PostingApplication::query()->updateOrCreate(['posting_id' => $request->posting_id, 'user_id' => auth()->id()], $request->validated());
         return $data;
     }
 

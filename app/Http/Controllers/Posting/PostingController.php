@@ -24,7 +24,7 @@ class PostingController extends BaseController
             ->when(isset($request->search), function ($q) use ($request, $columns) {
                 $q->orSearch($columns, 'LIKE', $request->search);
             })
-            ->allowedIncludes(['category', 'barangay', 'user'])
+            ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
             ->defaultSort('date_published', 'title')
             ->allowedSorts(['date_published', 'title', 'date_end']);
         if ($perPage === 'all') {

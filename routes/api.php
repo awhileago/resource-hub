@@ -79,4 +79,13 @@ Route::prefix('v1')->group(function () {
             Route::post('posting-information', 'store')->name('posting-information.store');
             Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update');
         });
+
+    Route::controller(\App\Http\Controllers\Posting\PostingApplicationController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('posting-application', 'index')->name('posting-application.index');
+            Route::get('posting-application/{postingApplication}', 'show')->name('posting-application.show');
+            Route::post('posting-application', 'store')->name('posting-application.store');
+            Route::put('posting-application/{postingApplication}', 'update')->name('posting-application.update');
+        });
 });

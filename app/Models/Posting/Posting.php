@@ -76,4 +76,9 @@ class Posting extends Model
     {
         return $this->belongsTo(LibPostingCategory::class, 'lib_posting_category_id', 'id');
     }
+
+    public function applicants()
+    {
+        return $this->hasMany(PostingApplication::class);
+    }
 }

@@ -30,7 +30,8 @@ class PostingResource extends JsonResource
             'barangay' => $this->whenLoaded('barangay'),
             'latitude' => $this->coordinates->latitude,
             'longitude' => $this->coordinates->longitude,
-
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }

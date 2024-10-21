@@ -43,6 +43,10 @@ class UserRequest extends FormRequest
                 //->uncompromised()
             ],
             'password_confirmation' => 'required:password',
+            'address' => 'required',
+            'barangay_code' => 'nullable|exists:barangays,psgc_10_digit_code',
+            'is_active' => 'nullable',
+            'is_admin' => 'nullable',
 
             'fathers_name' => 'nullable',
             'fathers_occupation' => 'nullable',

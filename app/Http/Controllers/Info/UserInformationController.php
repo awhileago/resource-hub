@@ -59,10 +59,10 @@ class UserInformationController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserRequest $request, User $userInformation)
+    public function update(Request $request, User $userInformation)
     {
-        $data = $userInformation->update($request->validated());
-        return $this->sendResponse($request->validated(), 'User information successfully updated.');
+        $data = $userInformation->update($request->all());
+        return $this->sendResponse($request->all(), 'User information successfully updated.');
     }
 
     /**

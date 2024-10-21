@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             LibAverageMonthlyIncomeSeeder::class,
             LibSchoolSeeder::class,
             LibEducationLevelSeeder::class,
+            LibPostingCategorySeeder::class,
         ]);
     }
 }

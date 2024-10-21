@@ -57,6 +57,12 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if (Auth::user()->is_active == 0) {
+            throw ValidationException::withMessages([
+                'account_status' => 'Account not activated!',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

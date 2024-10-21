@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::get('email/verify/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('email/resend', [\App\Http\Controllers\Auth\VerificationController::class, 'resend'])->name('verification.resend');
+//Route::get('/email/verify', function () {
+//    return view('auth.verify-email');
+//})->middleware('auth')->name('verification.notice');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,6 +35,9 @@ Route::prefix('v1/libraries')->group(function () {
 
     Route::get('education-level', [\App\Http\Controllers\Library\LibEducationLevelController::class, 'index'])->name('education-level.index');
     Route::get('education-level/{educationLevel}', [\App\Http\Controllers\Library\LibEducationLevelController::class, 'show'])->name('education-level.show');
+
+    Route::get('posting-category', [\App\Http\Controllers\Library\LibPostingCategoryController::class, 'index'])->name('posting-category.index');
+    Route::get('posting-category/{category}', [\App\Http\Controllers\Library\LibPostingCategoryController::class, 'show'])->name('posting-category.show');
 });
 
 //PSGC
@@ -62,5 +69,14 @@ Route::prefix('v1')->group(function () {
             Route::get('parent-information/{parentInformation}', 'show')->name('parent-information.show');
             Route::post('parent-information', 'store')->name('parent-information.store');
             Route::put('parent-information/{parentInformation}', 'update')->name('parent-information.update');
+        });
+
+    Route::controller(\App\Http\Controllers\Posting\PostingController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('posting-information', 'index')->name('posting-information.index');
+            Route::get('posting-information/{postingInformation}', 'show')->name('posting-information.show');
+            Route::post('posting-information', 'store')->name('posting-information.store');
+            Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update');
         });
 });

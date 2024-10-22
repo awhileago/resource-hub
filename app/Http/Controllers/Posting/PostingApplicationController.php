@@ -14,11 +14,16 @@ class PostingApplicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $perPage = $request->per_page ?? self::ITEMS_PER_PAGE;
 
         $data = QueryBuilder::for(PostingApplication::class)
+            ->when(isset($request->lib_posting_category_id), function ($query) use ($request) {
+                $query->with(['posting' => function($q) use ($request){
+                    $q->where('lib_posting_category_id', $request->lib_posting_category_id);
+                }]);
+            })
             ->allowedIncludes(['updatedBy', 'posting', 'user'])
             ->defaultSort('date_applied')
             ->allowedSorts(['date_applied']);

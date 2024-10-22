@@ -24,6 +24,14 @@ class PostingController extends BaseController
             ->when(isset($request->search), function ($q) use ($request, $columns) {
                 $q->orSearch($columns, 'LIKE', $request->search);
             })
+            ->when(!auth()->user()->is_admin, function($query) use($request) {
+                $query->with(['applicants' => function($q) {
+                    $q->whereUserId(auth()->id());
+                }]);
+            })
+            ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {
+                $q->where('lib_posting_category_id', $request->lib_posting_category_id);
+            })
             ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
             ->defaultSort('date_published', 'title')
             ->allowedSorts(['date_published', 'title', 'date_end']);

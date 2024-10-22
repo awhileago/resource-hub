@@ -22,7 +22,7 @@ class PostingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date_published' => 'required|date|date_format:Y-m-d|before:tomorrow',
+            'date_published' => 'nullable|date|date_format:Y-m-d|before:tomorrow',
             'date_end' => 'required|date|date_format:Y-m-d|after:date_published',
             'lib_posting_category_id' => 'required|exists:lib_posting_categories,id',
             'title' => 'required',

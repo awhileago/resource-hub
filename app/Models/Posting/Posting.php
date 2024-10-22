@@ -6,6 +6,7 @@ use App\Models\Library\LibPostingCategory;
 use App\Models\PSGC\Barangay;
 use App\Models\User;
 use App\Traits\FilterByUser;
+use App\Traits\HasSearchFilter;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,7 @@ use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
 class Posting extends Model
 {
     /** @use HasFactory<\Database\Factories\Posting/PostingFactory> */
-    use HasFactory, FilterByUser, HasUlids, HasSpatial;
+    use HasFactory, FilterByUser, HasUlids, HasSpatial, HasSearchFilter;
 
     public $incrementing = false;
 

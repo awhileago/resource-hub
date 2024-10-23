@@ -20,9 +20,19 @@ class PostingApplicationController extends Controller
 
         $data = QueryBuilder::for(PostingApplication::class)
             ->when(isset($request->lib_posting_category_id), function ($query) use ($request) {
-                $query->with(['posting' => function($q) use ($request){
+                $query->whereHas('posting', function ($q) use ($request) {
                     $q->where('lib_posting_category_id', $request->lib_posting_category_id);
-                }]);
+                })
+                ->with('posting');
+                /* $query->with(['posting' => function($q) use ($request){
+                    $q->where('lib_posting_category_id', $request->lib_posting_category_id);
+                }]); */
+            })
+            ->when(isset($request->show_list), function ($query) use ($request) {
+                $query->where('posting_id', $request->posting_id)->with(['user']);
+            })
+            ->when(!auth()->user()->is_admin, function($query) use($request) {
+                $query->whereUserId(auth()->id());
             })
             ->allowedIncludes(['updatedBy', 'posting', 'user'])
             ->defaultSort('date_applied')

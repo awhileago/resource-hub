@@ -31,6 +31,10 @@ class PostingResource extends JsonResource
             'latitude' => $this->coordinates->latitude,
             'longitude' => $this->coordinates->longitude,
             'applicants' => $this->whenLoaded('applicants'),
+            'no_scholar_flag' => $this->no_scholar_flag,
+            'no_ofw_flag' => $this->no_ofw_flag,
+            'no_shiftee_flag' => $this->no_shiftee_flag,
+            'no_irregular_flag' => $this->no_irregular_flag,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

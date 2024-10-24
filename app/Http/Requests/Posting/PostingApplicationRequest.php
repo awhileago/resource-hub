@@ -25,7 +25,7 @@ class PostingApplicationRequest extends FormRequest
             'posting_id' => 'required|exists:postings,id',
             'is_save' => 'nullable',
             'is_applied' => 'nullable',
-            //'date_applied' => 'required|date|date_format:Y-m-d|before:tomorrow',
+            'date_applied' => 'nullable|date|date_format:Y-m-d|before:tomorrow',
             'is_approved' => 'nullable',
             'remarks' => 'nullable',
         ];

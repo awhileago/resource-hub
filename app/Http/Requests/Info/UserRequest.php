@@ -48,6 +48,7 @@ class UserRequest extends FormRequest
             'is_active' => 'nullable',
             'is_admin' => 'nullable',
 
+            'ofw_flag' => 'nullable|boolean',
             'fathers_name' => 'nullable',
             'fathers_occupation' => 'nullable',
             'fathers_company' => 'nullable',
@@ -55,6 +56,11 @@ class UserRequest extends FormRequest
             'mothers_occupation' => 'nullable',
             'mothers_company' => 'nullable',
             'average_monthly_income' => 'nullable',
+
+            'lib_school_id' => 'required|exists:lib_schools,id',
+            'scholar_flag' => 'nullable|boolean',
+            'shiftee_flag' => 'nullable|boolean',
+            'irregular_flag' => 'nullable|boolean'
         ];
     }
 }

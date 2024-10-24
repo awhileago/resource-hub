@@ -31,6 +31,10 @@ class PostingRequest extends FormRequest
             'address' => 'nullable',
             'barangay_code' => 'nullable|exists:barangays,psgc_10_digit_code',
             'coordinates' => 'required',
+            'no_scholar_flag' => 'required',
+            'no_ofw_flag' => 'required',
+            'no_shiftee_flag' => 'required',
+            'no_irregular_flag' => 'required',
         ];
     }
 }

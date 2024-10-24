@@ -24,13 +24,32 @@ class PostingController extends BaseController
             ->when(isset($request->search), function ($q) use ($request, $columns) {
                 $q->orSearch($columns, 'LIKE', $request->search);
             })
+            ->when(isset($request->id), function ($q) use ($request, $columns) {
+                $q->whereId($request->id);
+            })
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 $query->with(['applicants' => function($q) {
                     $q->whereUserId(auth()->id());
                 }]);
             })
+            /* ->when(!auth()->user()->is_admin, function($query) use($request) {
+                $query->with(['applicants']);
+            }) */
             ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {
                 $q->where('lib_posting_category_id', $request->lib_posting_category_id);
+            })
+            ->when(isset($request->is_published), function ($q) use ($request) {
+                if($request->is_published == 'published') {
+                    $q->whereNotNull('date_published');
+                } else {
+                    $q->whereNull('date_published');
+                };
+            })
+            ->when(isset($request->start_date), function ($q) use ($request) {
+                $q->where('date_published', '>=', $request->start_date);
+            })
+            ->when(isset($request->end_date), function ($q) use ($request) {
+                $q->where('date_published', '<=', $request->end_date);
             })
             ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
             ->defaultSort('date_published', 'title')
@@ -47,7 +66,7 @@ class PostingController extends BaseController
      */
     public function store(PostingRequest $request)
     {
-        $data = Posting::query()->updateOrCreate(['date_published' => $request->date_published, 'title' => $request->title], $request->validated());
+        $data = Posting::query()->updateOrCreate(['id' => $request->id], $request->validated());
         return $data;
     }
 

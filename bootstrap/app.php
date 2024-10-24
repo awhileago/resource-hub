@@ -12,7 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'verified.email_or_mobile', \App\Http\Middleware\EnsureEmailOrMobileIsVerified::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

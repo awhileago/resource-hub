@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\MustVerifyMobileNumber;
 use App\Models\Info\ParentInformation;
 use App\Models\Library\LibSuffixName;
 use App\Traits\HasSearchFilter;
+use App\Traits\VerifiesMobileNumber;
 use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -14,9 +16,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileNumber
 {
-    use HasFactory, Notifiable, HasUlids, HasApiTokens, HasSearchFilter;
+    use HasFactory, Notifiable, HasUlids, HasApiTokens, HasSearchFilter, VerifiesMobileNumber;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $guarded = [
         'id',
+        'mobile_verified_at',
+        'email_verified_at'
     ];
 
     /**
@@ -50,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'mobile_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

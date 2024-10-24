@@ -7,6 +7,8 @@ Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'regi
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::get('email/verify/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend', [\App\Http\Controllers\Auth\VerificationController::class, 'resend'])->name('verification.resend');
+Route::post('/verify-otp', [\App\Http\Controllers\SMS\OtpController::class, 'verifyOtp'])->name('otp.verify');
+Route::post('/resend-otp', [\App\Http\Controllers\SMS\OtpController::class, 'resendOtp'])->name('otp.resend');
 //Route::get('/email/verify', function () {
 //    return view('auth.verify-email');
 //})->middleware('auth')->name('verification.notice');
@@ -94,5 +96,14 @@ Route::prefix('v1')->group(function () {
         ->group(function () {
             Route::get('user-education', 'index')->name('user-education.index');
             Route::post('user-education', 'store')->name('user-education.store');
+        });
+
+    Route::controller(\App\Http\Controllers\SMS\SendMessageController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('send-sms', 'index')->name('send-sms.index');
+//            Route::get('posting-application/{postingApplication}', 'show')->name('posting-application.show');
+//            Route::post('posting-application', 'store')->name('posting-application.store');
+//            Route::put('posting-application/{postingApplication}', 'update')->name('posting-application.update');
         });
 });

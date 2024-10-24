@@ -12,10 +12,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
 class AuthController extends BaseController
 {
+    protected $mobileOnlyDomains = [
+        '@student.tsu.edu.ph',
+        '@tarlac.sti.edu.ph',
+        '@cldhei.edu.ph',
+        '@pwutarlac.edu.ph'
+    ];
+
+
     /**
      * Register api
      *
@@ -25,14 +34,23 @@ class AuthController extends BaseController
     {
         $userInput = $request->safe()->except(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
         $parentInput = $request->safe()->only(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
-        //$input['password'] = bcrypt($input['password']);
+
         return DB::transaction(function() use($userInput, $parentInput){
             $user = User::create($userInput);
             $user->parents()->updateOrCreate($parentInput);
             $success['token'] =  $user->createToken(request()->ip())->accessToken;
             $success['name'] =  $user->last_name . ', ' . $user->first_name . ' ' . $user->middle_name;
 
-            return $this->sendResponse($success, 'User register successfully.');
+            if ($this->isMobileOnlyDomain($user->email)) {
+                // Only verify mobile number
+                $user->sendMobileNumberVerificationNotification();
+                return response()->json(['message' => 'User registered. OTP sent via SMS for mobile verification.']);
+            } else {
+                // Verify email
+                $user->sendEmailVerificationNotification();
+                return response()->json(['message' => 'User registered. Verification link sent to your email.']);
+            }
+            //return $this->sendResponse($success, 'User register successfully.');
         });
     }
 
@@ -55,5 +73,15 @@ class AuthController extends BaseController
         else{
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         }
+    }
+
+    protected function isMobileOnlyDomain($emailDomain)
+    {
+        foreach ($this->mobileOnlyDomains as $domain) {
+            if (Str::endsWith($emailDomain, $domain)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

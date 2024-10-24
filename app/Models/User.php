@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Contracts\MustVerifyMobileNumber;
 use App\Models\Info\ParentInformation;
 use App\Models\Library\LibSuffixName;
+use App\Models\SMS\Otp;
 use App\Traits\HasSearchFilter;
 use App\Traits\VerifiesMobileNumber;
 use DateTimeInterface;
@@ -87,6 +88,11 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
     public function parents()
     {
         return $this->hasOne(ParentInformation::class);
+    }
+
+    public function otp()
+    {
+        return $this->hasOne(Otp::class)->latest('created_at');
     }
 
 }

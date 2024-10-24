@@ -10,7 +10,7 @@ class SmsService
     {
         $response = Http::withHeaders([
             'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
-        ])->post('https://ws-v2.txtbox.com/messaging/v1/sms/push', [
+        ])->post(env('TXTBOX_URL'), [
             'message' => "Your OTP code is: $otpCode",
             'number' => $contactNumber,
         ]);

@@ -30,7 +30,10 @@ class UserInformationController extends BaseController
             ->when(isset($request->is_verified) && $request->is_verified === 'pending', function ($q) use ($request, $columns) {
                 $q->whereNull('email_verified_at');
             })
-            ->with(['parents'])
+            ->when(isset($request->user_info), function ($q) use ($request, $columns) {
+                $q->where('id', auth()->id());
+            })
+            ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')
             ->defaultSort('last_name', 'first_name', 'middle_name', 'birthdate')
             ->allowedSorts(['last_name', 'first_name', 'middle_name', 'birthdate']);

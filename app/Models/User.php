@@ -5,6 +5,9 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Info\ParentInformation;
 use App\Models\Library\LibSuffixName;
+use App\Models\Library\LibSchool;
+use App\Models\Library\LibAcademicProgram;
+use App\Models\Library\LibYearLevel;
 use App\Traits\HasSearchFilter;
 use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -84,4 +87,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(ParentInformation::class);
     }
 
+    public function school()
+    {
+        return $this->belongsTo(LibSchool::class, 'lib_school_id', 'id');
+    }
+
+    public function academicProgram()
+    {
+        return $this->belongsTo(LibAcademicProgram::class, 'lib_academic_program_id', 'id');
+    }
+
+    public function yearLevel()
+    {
+        return $this->belongsTo(LibYearLevel::class, 'lib_year_level_id', 'id');
+    }
 }

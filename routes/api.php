@@ -88,4 +88,11 @@ Route::prefix('v1')->group(function () {
             Route::post('posting-application', 'store')->name('posting-application.store');
             Route::put('posting-application/{postingApplication}', 'update')->name('posting-application.update');
         });
+
+    Route::controller(\App\Http\Controllers\User\UserEducationController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('user-education', 'index')->name('user-education.index');
+            Route::post('user-education', 'store')->name('user-education.store');
+        });
 });

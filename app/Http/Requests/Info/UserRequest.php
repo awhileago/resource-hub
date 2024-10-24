@@ -60,7 +60,10 @@ class UserRequest extends FormRequest
             'lib_school_id' => 'required|exists:lib_schools,id',
             'scholar_flag' => 'nullable|boolean',
             'shiftee_flag' => 'nullable|boolean',
-            'irregular_flag' => 'nullable|boolean'
+            'irregular_flag' => 'nullable|boolean',
+
+            'lib_education_level_id' => 'required|exists:lib_education_levels,id',
+            'lib_academic_program_id' => 'required|exists:lib_academic_programs,id'
         ];
     }
 }

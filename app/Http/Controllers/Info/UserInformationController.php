@@ -31,9 +31,10 @@ class UserInformationController extends BaseController
                 $q->whereNull('email_verified_at');
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
-                $q->where('id', auth()->id());
+                $q->where('id', auth()->id())
+                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
             })
-            ->with(['parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference'])
+            ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')
             ->defaultSort(['last_name', 'first_name', 'middle_name', 'birthdate'])
             ->allowedSorts(['last_name', 'first_name', 'middle_name', 'birthdate']);
@@ -60,7 +61,7 @@ class UserInformationController extends BaseController
     {
         $query = User::where('id', $userInformation->id);
         $data = QueryBuilder::for($query)
-            ->with(['suffixName', 'parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference'])
+            ->with(['suffixName', 'parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference', 'skill'])
             ->first();
 
         return new UserInformationResource($data);

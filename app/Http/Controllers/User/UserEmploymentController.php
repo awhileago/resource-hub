@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserEmploymentRequest;
 use App\Http\Resources\User\UserEmploymentResource;
 use App\Models\User\UserEmployment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -24,7 +25,7 @@ class UserEmploymentController extends BaseController
                 $query->whereUserId($request->user_id);
             })
             ->with(['user'])
-            ->orderByRaw('ISNULL(end_year) DESC, end_year DESC');
+            ->orderByRaw('ISNULL(end_date) DESC, end_date DESC');
 
         if ($perPage === 'all') {
             return UserEmploymentResource::collection($data->get());
@@ -38,7 +39,9 @@ class UserEmploymentController extends BaseController
      */
     public function store(UserEmploymentRequest $request)
     {
-        $data = UserEmployment::query()->updateOrCreate(['user_id' => auth()->id(), 'employer_name' => $request->employer_name, 'end_year' => $request->end_year], $request->validated());
+        $startDate = Carbon::createFromFormat('Y-m', $request->start_date)->startOfMonth()->format('Y-m-d');
+
+        $data = UserEmployment::query()->updateOrCreate(['user_id' => auth()->id(), 'employer_name' => $request->employer_name, 'start_date' => $startDate], $request->validated());
         return $this->sendResponse($data, 'User employment successfully created.');
     }
 

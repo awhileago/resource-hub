@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use App\Models\User;
 use App\Traits\FilterByUser;
+use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,26 @@ class UserEmployment extends Model
     protected $guarded = [
         'id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'start_date' => 'date:Y-m',
+            'end_date' => 'date:Y-m',
+        ];
+    }
+
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = Carbon::createFromFormat('Y-m', $value)->startOfMonth();
+    }
+
+    public function setEndDateAttribute($value)
+    {
+        if($value) {
+            $this->attributes['end_date'] = Carbon::createFromFormat('Y-m', $value)->startOfMonth();
+        }
+    }
 
     public function user()
     {

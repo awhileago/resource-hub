@@ -2,6 +2,7 @@
 
 namespace App\Models\Posting;
 
+use App\Models\SMS\SmsLog;
 use App\Models\User;
 use App\Traits\FilterByUser;
 use DateTimeInterface;
@@ -48,5 +49,10 @@ class PostingApplication extends Model
     public function posting()
     {
         return $this->belongsTo(Posting::class);
+    }
+
+    public function smsLogs()
+    {
+        return $this->hasMany(SmsLog::class);
     }
 }

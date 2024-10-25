@@ -32,12 +32,13 @@ class UserInformationController extends BaseController
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
                 $q->where('id', auth()->id())
-                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram']);
+                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference']);
             })
             ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')
-            ->defaultSort('last_name', 'first_name', 'middle_name', 'birthdate')
+            ->defaultSort(['last_name', 'first_name', 'middle_name', 'birthdate'])
             ->allowedSorts(['last_name', 'first_name', 'middle_name', 'birthdate']);
+
         if ($perPage === 'all') {
             return UserInformationResource::collection($user->get());
         }
@@ -60,7 +61,7 @@ class UserInformationController extends BaseController
     {
         $query = User::where('id', $userInformation->id);
         $data = QueryBuilder::for($query)
-            ->with(['suffixName', 'parents'])
+            ->with(['suffixName', 'parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference'])
             ->first();
 
         return new UserInformationResource($data);
@@ -71,8 +72,8 @@ class UserInformationController extends BaseController
      */
     public function update(Request $request, User $userInformation)
     {
-        $data = $userInformation->update($request->all());
-        return $this->sendResponse($request->all(), 'User information successfully updated.');
+        $userInformation->update($request->all());
+        return $this->sendResponse($userInformation, 'User information successfully updated.');
     }
 
     /**

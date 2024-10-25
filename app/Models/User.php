@@ -11,6 +11,9 @@ use App\Models\Library\LibAcademicProgram;
 use App\Models\Library\LibYearLevel;
 use App\Models\User\UserEducation;
 use App\Models\SMS\Otp;
+use App\Models\User\UserEducation;
+use App\Models\User\UserEmployment;
+use App\Models\User\UserReference;
 use App\Traits\HasSearchFilter;
 use App\Traits\VerifiesMobileNumber;
 use DateTimeInterface;
@@ -117,4 +120,20 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
     public function userEducation() {
         return $this->hasMany(UserEducation::class, 'user_id', 'id');
     }
+
+    public function education()
+    {
+        return $this->hasMany(UserEducation::class);
+    }
+
+    public function employment()
+    {
+        return $this->hasMany(UserEmployment::class)->orderByRaw('ISNULL(end_year) DESC, end_year DESC');
+    }
+
+    public function reference()
+    {
+        return $this->hasMany(UserReference::class)->orderBy('full_name');
+    }
+
 }

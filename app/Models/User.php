@@ -13,6 +13,7 @@ use App\Models\User\UserEducation;
 use App\Models\SMS\Otp;
 use App\Models\User\UserEmployment;
 use App\Models\User\UserReference;
+use App\Models\User\UserSkill;
 use App\Traits\HasSearchFilter;
 use App\Traits\VerifiesMobileNumber;
 use DateTimeInterface;
@@ -137,7 +138,7 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
 
     public function skill()
     {
-        return $this->hasMany(UserReference::class)->orderBy('description');
+        return $this->hasMany(UserSkill::class)->orderBy('description');
     }
 
 }

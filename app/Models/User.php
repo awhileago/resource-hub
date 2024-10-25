@@ -11,7 +11,6 @@ use App\Models\Library\LibAcademicProgram;
 use App\Models\Library\LibYearLevel;
 use App\Models\User\UserEducation;
 use App\Models\SMS\Otp;
-use App\Models\User\UserEducation;
 use App\Models\User\UserEmployment;
 use App\Models\User\UserReference;
 use App\Traits\HasSearchFilter;

@@ -9,6 +9,7 @@ use App\Models\Library\LibSuffixName;
 use App\Models\Library\LibSchool;
 use App\Models\Library\LibAcademicProgram;
 use App\Models\Library\LibYearLevel;
+use App\Models\SMS\SmsLog;
 use App\Models\User\UserEducation;
 use App\Models\SMS\Otp;
 use App\Models\User\UserEmployment;
@@ -139,6 +140,11 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
     public function skill()
     {
         return $this->hasMany(UserSkill::class)->orderBy('description');
+    }
+
+    public function sms()
+    {
+        return $this->hasMany(SmsLog::class);
     }
 
 }

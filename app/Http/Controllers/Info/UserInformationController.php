@@ -31,7 +31,8 @@ class UserInformationController extends BaseController
                 $q->whereNull('email_verified_at');
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
-                $q->where('id', auth()->id());
+                $q->where('id', auth()->id())
+                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram']);
             })
             ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')

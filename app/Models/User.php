@@ -9,6 +9,7 @@ use App\Models\Library\LibSuffixName;
 use App\Models\Library\LibSchool;
 use App\Models\Library\LibAcademicProgram;
 use App\Models\Library\LibYearLevel;
+use App\Models\User\UserEducation;
 use App\Models\SMS\Otp;
 use App\Traits\HasSearchFilter;
 use App\Traits\VerifiesMobileNumber;
@@ -113,4 +114,7 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
         return $this->hasOne(Otp::class)->latest('created_at');
     }
 
+    public function userEducation() {
+        return $this->hasMany(UserEducation::class, 'user_id', 'id');
+    }
 }

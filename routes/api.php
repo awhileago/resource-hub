@@ -116,6 +116,15 @@ Route::prefix('v1')->group(function () {
             Route::put('user-reference/{userReference}', 'update')->name('user-reference.update');
         });
 
+    Route::controller(\App\Http\Controllers\User\UserSkillController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('user-skill', 'index')->name('user-skill.index');
+            Route::get('user-skill/{userSkill}', 'show')->name('user-skill.show');
+            Route::post('user-skill', 'store')->name('user-skill.store');
+            Route::put('user-skill/{userSkill}', 'update')->name('user-skill.update');
+        });
+
     Route::controller(\App\Http\Controllers\SMS\SendMessageController::class)
         ->middleware('auth:api')
         ->group(function () {

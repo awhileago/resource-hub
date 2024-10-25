@@ -32,7 +32,7 @@ class UserInformationController extends BaseController
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
                 $q->where('id', auth()->id())
-                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference']);
+                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
             })
             ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')
@@ -61,7 +61,7 @@ class UserInformationController extends BaseController
     {
         $query = User::where('id', $userInformation->id);
         $data = QueryBuilder::for($query)
-            ->with(['suffixName', 'parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference'])
+            ->with(['suffixName', 'parents', 'school', 'academicProgram', 'yearLevel', 'education', 'employment', 'reference', 'skill'])
             ->first();
 
         return new UserInformationResource($data);

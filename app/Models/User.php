@@ -135,4 +135,9 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
         return $this->hasMany(UserReference::class)->orderBy('full_name');
     }
 
+    public function skill()
+    {
+        return $this->hasMany(UserReference::class)->orderBy('description');
+    }
+
 }

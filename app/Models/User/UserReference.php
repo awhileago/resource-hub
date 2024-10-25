@@ -8,11 +8,10 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Library\LibEducationLevel;
-use App\Models\Library\LibAcademicProgram;
 
-class UserEducation extends Model
+class UserReference extends Model
 {
+    /** @use HasFactory<\Database\Factories\User/UserReferenceFactory> */
     use HasFactory, HasUlids, FilterByUser;
 
     public $incrementing = false;
@@ -28,11 +27,18 @@ class UserEducation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function educationLevel() {
-        return $this->belongsTo(LibEducationLevel::class, 'lib_education_level_id', 'id');
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d H:i:s');
     }
 
-    public function academicProgram() {
-        return $this->belongsTo(LibAcademicProgram::class, 'lib_academic_program_id', 'id');
+    public function setFullNameAttribute($value)
+    {
+        $this->attributes['full_name'] = ucwords(strtolower($value));
+    }
+
+    public function setCompanyNameAttribute($value)
+    {
+        $this->attributes['company_name'] = ucwords(strtolower($value));
     }
 }

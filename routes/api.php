@@ -98,6 +98,24 @@ Route::prefix('v1')->group(function () {
             Route::post('user-education', 'store')->name('user-education.store');
         });
 
+    Route::controller(\App\Http\Controllers\User\UserEmploymentController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('user-employment', 'index')->name('user-employment.index');
+            Route::get('user-employment/{userEmployment}', 'show')->name('user-employment.show');
+            Route::post('user-employment', 'store')->name('user-employment.store');
+            Route::put('user-employment/{userEmployment}', 'update')->name('user-employment.update');
+        });
+
+    Route::controller(\App\Http\Controllers\User\UserReferenceController::class)
+        ->middleware('auth:api')
+        ->group(function () {
+            Route::get('user-reference', 'index')->name('user-reference.index');
+            Route::get('user-reference/{userReference}', 'show')->name('user-reference.show');
+            Route::post('user-reference', 'store')->name('user-reference.store');
+            Route::put('user-reference/{userReference}', 'update')->name('user-reference.update');
+        });
+
     Route::controller(\App\Http\Controllers\SMS\SendMessageController::class)
         ->middleware('auth:api')
         ->group(function () {

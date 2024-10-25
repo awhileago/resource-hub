@@ -25,6 +25,7 @@ class ParentInformationResource extends JsonResource
             'mothers_occupation' => $this->mothers_occupation,
             'mothers_company' => $this->mothers_company,
             'average_monthly_income' => $this->average_monthly_income,
+            'montly_income' => $this->whenLoaded('monthlyIncome'),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

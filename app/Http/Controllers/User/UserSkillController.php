@@ -23,7 +23,7 @@ class UserSkillController extends BaseController
             ->when(isset($request->user_id), function ($query) use ($request) {
                 $query->whereUserId($request->user_id);
             })
-            ->with(['user'])
+            // ->with(['user'])
             ->orderBy('description');
 
         if ($perPage === 'all') {

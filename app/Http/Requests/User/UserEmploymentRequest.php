@@ -24,6 +24,7 @@ class UserEmploymentRequest extends FormRequest
         return [
             'employer_name' => 'required',
             'position' => 'required',
+            'job_description' => 'nullable',
             'start_date' => 'required|date|date_format:Y-m',
             'end_date' => 'nullable|date|date_format:Y-m'
         ];

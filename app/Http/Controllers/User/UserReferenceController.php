@@ -23,7 +23,7 @@ class UserReferenceController extends BaseController
             ->when(isset($request->user_id), function ($query) use ($request) {
                 $query->whereUserId($request->user_id);
             })
-            ->with(['user'])
+            // ->with(['user'])
             ->orderBy('full_name');
 
         if ($perPage === 'all') {
@@ -38,7 +38,7 @@ class UserReferenceController extends BaseController
      */
     public function store(UserReferenceRequest $request)
     {
-        $data = UserReference::query()->updateOrCreate(['user_id' => auth()->id(), 'full_name' => $request->full_name], $request->validated());
+        $data = UserReference::query()->updateOrCreate(['id' => $request->id, 'user_id' => auth()->id(), 'full_name' => $request->full_name], $request->validated());
         return $this->sendResponse($data, 'User reference successfully created.');
     }
 

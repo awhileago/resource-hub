@@ -32,9 +32,9 @@ class UserInformationController extends BaseController
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
                 $q->where('id', auth()->id())
-                ->with(['userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
+                ->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
             })
-            ->with(['parents', 'school', 'academicProgram', 'yearLevel'])
+            ->with(['school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')
             ->defaultSort(['last_name', 'first_name', 'middle_name', 'birthdate'])
             ->allowedSorts(['last_name', 'first_name', 'middle_name', 'birthdate']);

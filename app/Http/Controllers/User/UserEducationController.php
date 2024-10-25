@@ -45,7 +45,7 @@ class UserEducationController extends Controller
      */
     public function store(UserEducationRequest $request)
     {
-        $data = UserEducation::query()->updateOrCreate(['id' => $request->id], $request->validated());
+        $data = UserEducation::query()->updateOrCreate(['id' => $request->id, 'user_id' => auth()->id()], $request->validated());
         return $data;
     }
 

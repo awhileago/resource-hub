@@ -24,7 +24,7 @@ class UserEmploymentController extends BaseController
             ->when(isset($request->user_id), function ($query) use ($request) {
                 $query->whereUserId($request->user_id);
             })
-            ->with(['user'])
+            // ->with(['user'])
             ->orderByRaw('ISNULL(end_date) DESC, end_date DESC');
 
         if ($perPage === 'all') {
@@ -41,7 +41,7 @@ class UserEmploymentController extends BaseController
     {
         $startDate = Carbon::createFromFormat('Y-m', $request->start_date)->startOfMonth()->format('Y-m-d');
 
-        $data = UserEmployment::query()->updateOrCreate(['user_id' => auth()->id(), 'employer_name' => $request->employer_name, 'start_date' => $startDate], $request->validated());
+        $data = UserEmployment::query()->updateOrCreate(['id' => $request->id, 'user_id' => auth()->id(), 'start_date' => $startDate], $request->validated());
         return $this->sendResponse($data, 'User employment successfully created.');
     }
 

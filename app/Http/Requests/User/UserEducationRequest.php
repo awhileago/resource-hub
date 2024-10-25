@@ -22,7 +22,7 @@ class UserEducationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'lib_education_level_id' => 'required|exists:lib_education_levels,id',
             'lib_academic_program_id' => 'nullable|exists:lib_academic_programs,id',
             'school_name' => 'required',

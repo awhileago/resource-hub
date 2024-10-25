@@ -20,6 +20,7 @@ class UserEmploymentResource extends JsonResource
             'user' => $this->whenLoaded('user'),
             'employer_name' => $this->employer_name,
             'position' => $this->position,
+            'job_description' => $this->job_description,
             'start_date' => $this->start_date->format('Y-m'),
             'end_date' => $this->end_date?->format('Y-m'),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),

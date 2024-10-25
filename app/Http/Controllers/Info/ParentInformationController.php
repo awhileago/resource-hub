@@ -15,9 +15,15 @@ class ParentInformationController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = QueryBuilder::for(ParentInformation::class)
+            ->when(isset($request->user_id), function ($query) use ($request) {
+                $query->whereUserId($request->user_id);
+            })
+            ->with(['monthlyIncome']);
+
+        return ['data' => $data->first()];
     }
 
     /**

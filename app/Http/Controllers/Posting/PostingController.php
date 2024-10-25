@@ -52,7 +52,7 @@ class PostingController extends BaseController
                 $q->where('date_published', '<=', $request->end_date);
             })
             ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
-            ->defaultSort('date_published', 'title')
+            ->defaultSort(['date_published', 'title'])
             ->allowedSorts(['date_published', 'title', 'date_end']);
         if ($perPage === 'all') {
             return PostingResource::collection($data->get());

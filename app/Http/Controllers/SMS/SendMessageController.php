@@ -77,6 +77,22 @@ class SendMessageController extends BaseController
         return response()->json(['message' => 'Messages sent successfully!']);
     }
 
+    public function sendMessage(Request $request)
+    {
+        $response = Http::withHeaders([
+            'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
+        ])->post(env('TXTBOX_URL'), [
+            'message' => $request->message,
+            'number' => $request->contact_number,
+        ]);
+
+        if ($response->failed()) {
+            throw new \Exception('Failed to send SMS via Txtbox: ' . $response->body());
+        }
+
+        return $response->json();
+    }
+
 // Helper function to send SMS
     private function sendSms($contactNumber, $message)
     {

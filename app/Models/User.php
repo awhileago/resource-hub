@@ -127,7 +127,7 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
 
     public function employment()
     {
-        return $this->hasMany(UserEmployment::class)->orderByRaw('ISNULL(end_year) DESC, end_year DESC');
+        return $this->hasMany(UserEmployment::class)->orderByRaw('ISNULL(end_date) DESC, end_date DESC');
     }
 
     public function reference()

@@ -20,8 +20,8 @@ class UserEmploymentResource extends JsonResource
             'user' => $this->whenLoaded('user'),
             'employer_name' => $this->employer_name,
             'position' => $this->position,
-            'start_year' => $this->start_year,
-            'end_year' => $this->end_year,
+            'start_date' => $this->start_date->format('Y-m'),
+            'end_date' => $this->end_date?->format('Y-m'),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

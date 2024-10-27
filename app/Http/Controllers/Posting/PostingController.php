@@ -31,6 +31,24 @@ class PostingController extends BaseController
                 $query->with(['applicants' => function($q) {
                     $q->whereUserId(auth()->id());
                 }]);
+
+
+                $query->whereRaw("ST_Distance_Sphere(coordinates, ST_GeomFromText(?)) <= ?", [
+                    "POINT($request->lng $request->lat)",
+                    $request->radius
+                ]);
+
+                if(auth()->user()->scholar_flag) {
+                    $query->where('no_scholar_flag', 0);
+                }
+
+                if(auth()->user()->shiftee_flag) {
+                    $query->where('no_shiftee_flag', 0);
+                }
+
+                if(auth()->user()->irregular_flag) {
+                    $query->where('no_irregular_flag', 0);
+                }
             })
             /* ->when(!auth()->user()->is_admin, function($query) use($request) {
                 $query->with(['applicants']);

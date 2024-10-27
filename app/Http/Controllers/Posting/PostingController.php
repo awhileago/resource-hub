@@ -32,11 +32,12 @@ class PostingController extends BaseController
                     $q->whereUserId(auth()->id());
                 }]);
 
-
-                $query->whereRaw("ST_Distance_Sphere(coordinates, ST_GeomFromText(?)) <= ?", [
-                    "POINT($request->lng $request->lat)",
-                    $request->radius
-                ]);
+                if(isset($request->lng) && isset($request->lat) && isset($request->radius)) {
+                    $query->whereRaw("ST_Distance_Sphere(coordinates, ST_GeomFromText(?)) <= ?", [
+                        "POINT($request->lng $request->lat)",
+                        $request->radius
+                    ]);
+                }
 
                 if(auth()->user()->scholar_flag) {
                     $query->where('no_scholar_flag', 0);

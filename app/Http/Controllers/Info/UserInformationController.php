@@ -33,6 +33,14 @@ class UserInformationController extends BaseController
             ->when(isset($request->is_verified) && $request->is_verified === 'rejected', function ($q) use ($request) {
                 $q->where('user_verified', 0);
             })
+
+            ->when(isset($request->active_status) && $request->active_status === 'active', function ($q) use ($request) {
+                $q->where('is_active', 1);
+            })
+            ->when(isset($request->active_status) && $request->active_status === 'inactive', function ($q) use ($request) {
+                $q->where('is_active', 0);
+            })
+
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
                 $q->where('id', auth()->id())
                 ->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);

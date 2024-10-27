@@ -49,6 +49,10 @@ class PostingController extends BaseController
                 if(auth()->user()->irregular_flag) {
                     $query->where('no_irregular_flag', 0);
                 }
+
+                if (auth()->user()->parents()->where('ofw_flag', 1)->exists()) {
+                    $query->where('no_ofw_flag', 0);
+                }
             })
             /* ->when(!auth()->user()->is_admin, function($query) use($request) {
                 $query->with(['applicants']);

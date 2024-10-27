@@ -24,11 +24,14 @@ class UserInformationController extends BaseController
             ->when(isset($request->search), function ($q) use ($request, $columns) {
                 $q->orSearch($columns, 'LIKE', $request->search);
             })
-            ->when(isset($request->is_verified) && $request->is_verified === 'verified', function ($q) use ($request, $columns) {
-                $q->whereNotNull('email_verified_at');
-            })
             ->when(isset($request->is_verified) && $request->is_verified === 'pending', function ($q) use ($request, $columns) {
-                $q->whereNull('email_verified_at');
+                $q->whereNull('user_verified');
+            })
+            ->when(isset($request->is_verified) && $request->is_verified === 'verified', function ($q) use ($request, $columns) {
+                $q->where('user_verified', 1);
+            })
+            ->when(isset($request->is_verified) && $request->is_verified === 'rejected', function ($q) use ($request, $columns) {
+                $q->where('user_verified', 0);
             })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
                 $q->where('id', auth()->id())

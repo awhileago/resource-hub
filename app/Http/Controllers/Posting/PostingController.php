@@ -27,7 +27,7 @@ class PostingController extends BaseController
             ->when(isset($request->id), function ($q) use ($request, $columns) {
                 $q->whereId($request->id);
             })
-            ->when(!auth()->user()->is_admin, function($query) use($request) {
+            ->when(auth()->user() && !auth()->user()->is_admin, function($query) use($request) {
                 $query->with(['applicants' => function($q) {
                     $q->whereUserId(auth()->id());
                 }]);

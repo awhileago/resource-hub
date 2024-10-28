@@ -74,12 +74,12 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingController::class)
-        ->middleware('auth:api')
+        // ->middleware('auth:api')
         ->group(function () {
             Route::get('posting-information', 'index')->name('posting-information.index');
-            Route::get('posting-information/{postingInformation}', 'show')->name('posting-information.show');
-            Route::post('posting-information', 'store')->name('posting-information.store');
-            Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update');
+            Route::get('posting-information/{postingInformation}', 'show')->name('posting-information.show')->middleware('auth:api');
+            Route::post('posting-information', 'store')->name('posting-information.store')->middleware('auth:api');
+            Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update')->middleware('auth:api');
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingApplicationController::class)

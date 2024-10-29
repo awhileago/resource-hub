@@ -7,6 +7,7 @@ Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'regi
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
 Route::get('email/verify/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend', [\App\Http\Controllers\Auth\VerificationController::class, 'resend'])->name('verification.resend');
+Route::get('check-email', [\App\Http\Controllers\Auth\VerificationController::class, 'checkEmail'])->name('verification.checkEmail');
 Route::post('/verify-otp', [\App\Http\Controllers\SMS\OtpController::class, 'verifyOtp'])->name('otp.verify');
 Route::post('/resend-otp', [\App\Http\Controllers\SMS\OtpController::class, 'resendOtp'])->name('otp.resend');
 //Route::get('/email/verify', function () {

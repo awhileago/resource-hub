@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class VerificationController extends Controller
+class VerificationController extends BaseController
 {
 //    public function __construct()
 //    {
@@ -50,5 +51,14 @@ class VerificationController extends Controller
         auth()->user()->sendEmailVerificationNotification();
 
         return response()->json(['message' => 'Email verification link sent on your email id.']);
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|unique:users',
+        ]);
+
+        return $this->sendResponse($validated['email'], 'This email is available');
     }
 }

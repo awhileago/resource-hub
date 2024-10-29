@@ -50,6 +50,9 @@ class UserRequest extends FormRequest
             'grade_url' => 'nullable|mimes:pdf|max:5120',   // Max size 5MB
             'is_active' => 'nullable',
             'is_admin' => 'nullable',
+            'irregular_flag' => 'nullable|boolean',
+            'scholar_flag' => 'nullable|boolean',
+            'shiftee_flag' => 'nullable|boolean',
 
             'ofw_flag' => 'nullable|boolean',
             'fathers_name' => 'nullable',

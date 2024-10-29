@@ -45,6 +45,9 @@ class UserRequest extends FormRequest
             'password_confirmation' => 'required:password',
             'address' => 'required',
             'barangay_code' => 'nullable|exists:barangays,psgc_10_digit_code',
+            'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max size 2MB
+            'cor_url' => 'nullable|mimes:pdf|max:5120',   // Max size 5MB
+            'grade_url' => 'nullable|mimes:pdf|max:5120',   // Max size 5MB
             'is_active' => 'nullable',
             'is_admin' => 'nullable',
 

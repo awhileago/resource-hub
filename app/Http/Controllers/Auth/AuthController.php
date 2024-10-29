@@ -35,7 +35,36 @@ class AuthController extends BaseController
         $userInput = $request->safe()->except(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
         $parentInput = $request->safe()->only(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
 
-        return DB::transaction(function() use($userInput, $parentInput){
+        return DB::transaction(function() use($userInput, $parentInput, $request){
+            $photoPath = null;
+            $corPath = null;
+            $gradePath = null;
+            // Handling photo upload
+            if ($request->hasFile('photo_url')) {
+                //$photoPath = $request->file('photo_url')->store('uploads/photos', 'public');
+                $photoFile = $request->file('photo_url');
+                $newPhotoName = Str::ulid() . '.' . $photoFile->getClientOriginalExtension();  // Generate unique name
+                $photoPath = $photoFile->storeAs('uploads/photos', $newPhotoName, 'public');
+                $userInput['photo_url'] = $photoPath;
+            }
+
+            // Handling document upload
+            if ($request->hasFile('cor_url')) {
+                //$corPath = $request->file('cor_url')->store('uploads/documents', 'public');
+                $corFile = $request->file('cor_url');
+                $newCorName = Str::ulid() . '.' . $corFile->getClientOriginalExtension();  // Generate unique name
+                $corPath = $corFile->storeAs('uploads/documents', $newCorName, 'public');
+                $userInput['cor_url'] = $corPath;
+            }
+
+            if ($request->hasFile('grade_url')) {
+                //$gradePath = $request->file('grade_url')->store('uploads/documents', 'public');
+                $gradeFile = $request->file('grade_url');
+                $newGradeName = Str::ulid() . '.' . $gradeFile->getClientOriginalExtension();  // Generate unique name
+                $corPath = $gradeFile->storeAs('uploads/documents', $newGradeName, 'public');
+                $userInput['grade_url'] = $corPath;
+            }
+
             $user = User::create($userInput);
             $user->parents()->updateOrCreate($parentInput);
             $success['token'] =  $user->createToken(request()->ip())->accessToken;

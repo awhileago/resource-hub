@@ -66,6 +66,10 @@ class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileN
             'email_verified_at' => 'datetime',
             'mobile_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'irregular_flag' => 'boolean',
+            'scholar_flag' => 'boolean',
+            'shiftee_flag' => 'boolean',
         ];
     }
 

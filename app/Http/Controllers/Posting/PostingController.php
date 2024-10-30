@@ -55,9 +55,9 @@ class PostingController extends BaseController
                     $query->where('no_ofw_flag', 0);
                 }
             })
-            /* ->when(!auth()->user()->is_admin, function($query) use($request) {
+            ->when(!auth()->user()->is_admin, function($query) use($request) {
                 $query->with(['applicants']);
-            }) */
+            })
             ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {
                 $q->where('lib_posting_category_id', $request->lib_posting_category_id);
             })

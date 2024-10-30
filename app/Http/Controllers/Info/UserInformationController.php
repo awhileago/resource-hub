@@ -42,8 +42,8 @@ class UserInformationController extends BaseController
             })
 
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
-                $q->where('id', auth()->id())
-                ->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
+                // $q->where('id', auth()->id())
+                $q->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
             })
             ->with(['school', 'academicProgram', 'yearLevel'])
             ->allowedIncludes('suffixName')

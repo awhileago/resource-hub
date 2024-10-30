@@ -35,6 +35,7 @@ class UserInformationResource extends JsonResource
             'barangay_code' => $this->when(! $this->relationLoaded('barangay'), $this->barangay_code),
             'barangay' => $this->whenLoaded('barangay'),
             'lib_school_id' => $this->lib_school_id,
+            'school' => $this->whenLoaded('school'),
             'lib_education_level_id' => $this->lib_education_level_id,
             'lib_year_level_id' => $this->lib_year_level_id,
             'scholar_flag' => $this->scholar_flag,

@@ -70,7 +70,7 @@ class AuthController extends BaseController
             $success['token'] =  $user->createToken(request()->ip())->accessToken;
             $success['name'] =  $user->last_name . ', ' . $user->first_name . ' ' . $user->middle_name;
 
-            if ($this->isMobileOnlyDomain($user->email)) {
+            /*if ($this->isMobileOnlyDomain($user->email)) {
                 // Only verify mobile number
                 $user->sendMobileNumberVerificationNotification();
                 return response()->json(['message' => 'User registered. OTP sent via SMS for mobile verification.']);
@@ -78,7 +78,9 @@ class AuthController extends BaseController
                 // Verify email
                 $user->sendEmailVerificationNotification();
                 return response()->json(['message' => 'User registered. Verification link sent to your email.']);
-            }
+            }*/
+            $user->sendEmailVerificationNotification();
+            return response()->json(['message' => 'User registered. Verification link sent to your email.']);
             //return $this->sendResponse($success, 'User register successfully.');
         });
     }

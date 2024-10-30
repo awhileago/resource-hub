@@ -65,7 +65,7 @@ class LoginRequest extends FormRequest
             ]);
         }*/
         $user = auth()->user();
-        if ($this->isMobileOnlyDomain($user->email)) {
+        /*if ($this->isMobileOnlyDomain($user->email)) {
             if (is_null($user->mobile_verified_at)) {
                 // Send OTP if not already sent or expired
                 if ($this->isOtpExpired($user)) {
@@ -89,6 +89,14 @@ class LoginRequest extends FormRequest
                     'account_status' => 'Your email address is not verified. You need to confirm your account. We have sent you an activation code, please check your email.',
                 ]);
             }
+        }*/
+
+        if (is_null($user->email_verified_at)) {
+            // Send email verification if not already sent or expired
+            event(new Registered(Auth::user()));
+            throw ValidationException::withMessages([
+                'account_status' => 'Your email address is not verified. You need to confirm your account. We have sent you an activation code, please check your email.',
+            ]);
         }
 
         if (Auth::user()->is_active == 0) {

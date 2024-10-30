@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class VerificationController extends BaseController
 {
@@ -15,6 +16,12 @@ class VerificationController extends BaseController
 //        $this->middleware('signed')->only('verify');
 //        $this->middleware('throttle:6,1')->only('verify', 'resend');
 //    }
+    protected $mobileOnlyDomains = [
+        '@student.tsu.edu.ph',
+        '@tarlac.sti.edu.ph',
+        '@cldhei.edu.ph',
+        '@pwutarlac.edu.ph'
+    ];
 
     /**
      * Verify email
@@ -33,7 +40,14 @@ class VerificationController extends BaseController
             $user->markEmailAsVerified();
         }
 
-        return response()->json(['message' => 'Your e-mail is verified. You can now login.']);
+        if ($this->isMobileOnlyDomain($user->email)) {
+            $user->update(['user_verified' => 1, 'is_active' => 1]);
+            return response()->json(['message' => 'Your e-mail is verified and activated. You can now login.']);
+        } else {
+            return response()->json(['message' => 'Your email has been verified. Please wait for the admin to verify your documents before your account is activated.']);
+        }
+
+
         //return redirect()->to('/');
     }
 
@@ -60,5 +74,15 @@ class VerificationController extends BaseController
         ]);
 
         return $this->sendResponse($validated['email'], 'This email is available');
+    }
+
+    protected function isMobileOnlyDomain($emailDomain)
+    {
+        foreach ($this->mobileOnlyDomains as $domain) {
+            if (Str::endsWith($emailDomain, $domain)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

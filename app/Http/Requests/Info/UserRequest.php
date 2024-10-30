@@ -48,8 +48,8 @@ class UserRequest extends FormRequest
             'photo_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max size 2MB
             'cor_url' => 'nullable|mimes:pdf|max:5120',   // Max size 5MB
             'grade_url' => 'nullable|mimes:pdf|max:5120',   // Max size 5MB
-            'is_active' => 'nullable',
-            'is_admin' => 'nullable',
+            'is_active' => 'nullable|boolean',
+            'is_admin' => 'nullable|boolean',
             'irregular_flag' => 'nullable|boolean',
             'scholar_flag' => 'nullable|boolean',
             'shiftee_flag' => 'nullable|boolean',
@@ -64,10 +64,6 @@ class UserRequest extends FormRequest
             'average_monthly_income' => 'nullable',
 
             'lib_school_id' => 'required|exists:lib_schools,id',
-            'scholar_flag' => 'nullable|boolean',
-            'shiftee_flag' => 'nullable|boolean',
-            'irregular_flag' => 'nullable|boolean',
-
             'lib_education_level_id' => 'required|exists:lib_education_levels,id',
             'lib_academic_program_id' => 'required|exists:lib_academic_programs,id',
             'lib_year_level_id' => 'required|exists:lib_year_levels,id'

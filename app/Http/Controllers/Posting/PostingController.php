@@ -74,6 +74,7 @@ class PostingController extends BaseController
             ->when(isset($request->end_date), function ($q) use ($request) {
                 $q->where('date_published', '<=', $request->end_date);
             })
+            ->withCount('applicants')
             ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
             ->defaultSort(['date_published', 'title'])
             ->allowedSorts(['date_published', 'title', 'date_end']);

@@ -30,11 +30,12 @@ class PostingResource extends JsonResource
             'barangay' => $this->whenLoaded('barangay'),
             'latitude' => $this->coordinates->latitude,
             'longitude' => $this->coordinates->longitude,
-            'applicants' => $this->whenLoaded('applicants'),
+            'applicants' => PostingApplicationResource::collection($this->whenLoaded('applicants')),
             'no_scholar_flag' => $this->no_scholar_flag,
             'no_ofw_flag' => $this->no_ofw_flag,
             'no_shiftee_flag' => $this->no_shiftee_flag,
             'no_irregular_flag' => $this->no_irregular_flag,
+            'posting_applications_count' => $this->applicants_count,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

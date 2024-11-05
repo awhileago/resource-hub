@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);
+Route::get('logout', [\App\Http\Controllers\Auth\AuthController::class, 'logout'])->middleware('auth:api');
+Route::get('deactivate', [\App\Http\Controllers\Auth\AuthController::class, 'deactivate'])->middleware('auth:api');
 Route::get('email/verify/{id}', [\App\Http\Controllers\Auth\VerificationController::class, 'verify'])->name('verification.verify');
 Route::get('email/resend', [\App\Http\Controllers\Auth\VerificationController::class, 'resend'])->name('verification.resend');
 Route::get('check-email', [\App\Http\Controllers\Auth\VerificationController::class, 'checkEmail'])->name('verification.checkEmail');

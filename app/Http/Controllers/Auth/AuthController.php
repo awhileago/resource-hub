@@ -106,6 +106,20 @@ class AuthController extends BaseController
         }
     }
 
+    public function logout(Request $request)
+    {
+        /*
+         * This will log the user out from the current device where he requested to log out.
+         */
+        $user = Auth::user()->token();
+        $user->revoke();
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'You have successfully logged out!',
+        ]);
+    }
+
     protected function isMobileOnlyDomain($emailDomain)
     {
         foreach ($this->mobileOnlyDomains as $domain) {
@@ -114,5 +128,17 @@ class AuthController extends BaseController
             }
         }
         return false;
+    }
+
+    public function deactivate()
+    {
+        $user = Auth::user();
+        $user->update(['is_active' => 0]);
+        $user->token()->revoke();
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Your account is now deactivated!',
+        ]);
     }
 }

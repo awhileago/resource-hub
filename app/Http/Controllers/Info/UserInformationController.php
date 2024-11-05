@@ -41,8 +41,11 @@ class UserInformationController extends BaseController
                 $q->where('is_active', 0);
             })
 
+            ->when(!auth()->user()->is_admin && isset($request->user_info), function ($q) use ($request, $columns) {
+                $q->where('id', auth()->id());
+                $q->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
+            })
             ->when(isset($request->user_info), function ($q) use ($request, $columns) {
-                // $q->where('id', auth()->id())
                 $q->with(['parents', 'parents.monthlyIncome', 'userEducation', 'userEducation.educationLevel', 'userEducation.academicProgram', 'employment', 'reference', 'skill']);
             })
             ->with(['school', 'academicProgram', 'yearLevel'])

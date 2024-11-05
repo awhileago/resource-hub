@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SMS;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
+use App\Mail\ApplicantNotificationMail;
 use App\Models\Posting\Posting;
 use App\Models\Posting\PostingApplication;
 use App\Models\Posting\PostingMessageTemplate;
@@ -11,6 +12,7 @@ use App\Models\SMS\SmsLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class SendMessageController extends BaseController
 {
@@ -39,31 +41,43 @@ class SendMessageController extends BaseController
         $posting = Posting::findOrFail($request->posting_id);
 
         // Get the message template
-        $message = PostingMessageTemplate::where('posting_id', $request->posting_id)->firstOrFail()->message;
+        $message = PostingMessageTemplate::where('posting_id', $request->posting_id)->firstOrFail();
         // Get all approved applicants
         $approvedApplicants = PostingApplication::where('posting_id', $request->posting_id)
+            ->where('is_applied', 1)
             ->whereDoesntHave('smsLogs')
-            ->where('is_approved', 1) // Assuming 'approved' status
+            ->orWhereHas('smsLogs', function ($q) {
+                $q->where('status', 'failed');
+            })
             ->get();
         foreach ($approvedApplicants as $applicant) {
             $contactNumber = $applicant->user->contact_number;
             // Customize the message if needed (e.g., adding applicant name)
-            $message = str_replace('{name}', $applicant->user->first_name . ' ' . $applicant->user->last_name, $message);
+            $mobileMessage = $applicant->is_approved == 1 ? $message->mobile_message_approved : $message->mobile_message_rejected;
+            $emailMessage = $applicant->is_approved == 1 ? $message->email_message_approved : $message->email_message_rejected;
+
+            $mobileMessage = str_replace('{name}', $applicant->user->first_name . ' ' . $applicant->user->last_name, $mobileMessage);
+            $emailMessage = str_replace('{name}', $applicant->user->first_name . ' ' . $applicant->user->last_name, $emailMessage);
             // Send SMS
             try {
-                $this->sendSms($contactNumber, $message);
-                SmsLog::create([
+                $this->sendSms($contactNumber, $mobileMessage);
+                SmsLog::updateOrCreate([
                     'posting_application_id' => $applicant->id,
-                    'user_id' => $applicant->user->id,
+                    'user_id' => $applicant->user->id,],
+                    [
                     'contact_number' => $contactNumber,
-                    'message' => $message,
+                    'message' => $mobileMessage,
                     'status' => 'success',
+                    'error_message' => '',
                 ]);
+                Mail::to($applicant->user->email)
+                    ->send(new ApplicantNotificationMail(['subject' => $posting->title, 'message' => $emailMessage]));
             } catch (\Exception $e) {
                 // Log failed SMS send
-                SmsLog::create([
+                SmsLog::updateOrCreate([
                     'posting_application_id' => $applicant->id,
-                    'user_id' => $applicant->user->id,
+                    'user_id' => $applicant->user->id],
+                    [
                     'contact_number' => $contactNumber,
                     'message' => $message,
                     'status' => 'failed',

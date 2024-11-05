@@ -62,7 +62,7 @@
 
         <!-- Footer -->
         <div class="email-footer">
-            <p>If you did not request this, please ignore this email.</p>
+            <p>If you have any questions, please feel free to reach out to us.</p>
             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
         </div>
     </div>

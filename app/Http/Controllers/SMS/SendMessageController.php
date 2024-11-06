@@ -51,6 +51,7 @@ class SendMessageController extends BaseController
                 $q->where('status', 'failed');
             })
             ->get();
+
         foreach ($approvedApplicants as $applicant) {
             $contactNumber = $applicant->user->contact_number;
             // Customize the message if needed (e.g., adding applicant name)

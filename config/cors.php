@@ -12,14 +12,17 @@ return [
     | in web browsers. You are free to adjust these settings as needed.
     |
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-    |
+    |['http://localhost:4200','https://*.resourcehub.cloud', 'https://app.resourcehub.cloud', 'https://resourcehub.cloud', '*']
     */
 
     'paths' => ['api/*', 'sanctum/csrf-cookie', 'api/v1/*', 'api'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:4200','https://*.resourcehub.cloud', 'https://app.resourcehub.cloud', 'https://resourcehub.cloud', '*'],
+    'allowed_origins' => [
+        'http://localhost:4200',
+        'https://app.resourcehub.cloud',
+    ],
 
     'allowed_origins_patterns' => [],
 

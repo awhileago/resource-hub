@@ -3,12 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::options('{any}', function () {
+/* Route::options('{any}', function () {
     return response()->json([], 200)
-    ->header('Access-Control-Allow-Origin', 'https://app.resourcehub.cloud') // Change to specific origin if needed
+    ->header('Access-Control-Allow-Origin', 'https://app.resourcehub.cloud')
     ->header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, DELETE, PUT')
     ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-})->where('any', '.*');
+})->where('any', '.*'); */
 
 Route::post('register', [\App\Http\Controllers\Auth\AuthController::class, 'register']);
 Route::post('login', [\App\Http\Controllers\Auth\AuthController::class, 'login']);

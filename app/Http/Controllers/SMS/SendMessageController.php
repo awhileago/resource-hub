@@ -45,6 +45,7 @@ class SendMessageController extends BaseController
         // Get all approved applicants
         $approvedApplicants = PostingApplication::where('posting_id', $request->posting_id)
             ->where('is_applied', 1)
+            ->whereNotNull('is_approved')
             ->whereDoesntHave('smsLogs')
             ->orWhereHas('smsLogs', function ($q) {
                 $q->where('status', 'failed');

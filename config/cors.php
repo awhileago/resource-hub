@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:4200','https://*.resourcehub.cloud', 'https://app.resourcehub.cloud', 'https://resourcehub.cloud'],
+    'allowed_origins' => ['http://localhost:4200','https://*.resourcehub.cloud', 'https://app.resourcehub.cloud', 'https://resourcehub.cloud', '*'],
 
     'allowed_origins_patterns' => [],
 

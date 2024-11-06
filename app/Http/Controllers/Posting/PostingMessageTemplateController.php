@@ -40,7 +40,7 @@ class PostingMessageTemplateController extends BaseController
      */
     public function store(PostingMessageTemplateRequest $request)
     {
-        $data = PostingMessageTemplate::query()->updateOrCreate(['posting_id' => $request->posting_id, 'is_approved' => $request->is_approved], $request->validated());
+        $data = PostingMessageTemplate::query()->updateOrCreate(['posting_id' => $request->posting_id], $request->validated());
         return $this->sendResponse($data, 'Posting message template successfully created.');
     }
 

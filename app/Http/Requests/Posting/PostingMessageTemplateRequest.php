@@ -23,7 +23,7 @@ class PostingMessageTemplateRequest extends FormRequest
     {
         return [
             'posting_id' => 'required|exists:postings,id',
-            'is_approved' => 'required|boolean',
+            // 'is_approved' => 'required|boolean',
             'mobile_message_approved' => 'required',
             'mobile_message_rejected' => 'required',
             'email_message_approved' => 'required',

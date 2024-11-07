@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Library\LibAverageMonthlyIncome;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ParentInformation extends Model
+class ParentInformation extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\Info/ParentInformationFactory> */
-    use HasFactory, HasUlids, FilterByUser;
+    use HasFactory, HasUlids, FilterByUser, \OwenIt\Auditing\Auditable;
 
     public $incrementing = false;
 
@@ -20,6 +21,22 @@ class ParentInformation extends Model
 
     protected $guarded = [
         'id',
+    ];
+
+    /**
+     * Attributes to include in the Audit.
+     *
+     * @var array
+     */
+    protected $auditInclude = [
+        'ofw_flag',
+        'fathers_name',
+        'fathers_occupation',
+        'fathers_company',
+        'mothers_name',
+        'mothers_occupation',
+        'mothers_company',
+        'average_monthly_income',
     ];
 
     public function user()

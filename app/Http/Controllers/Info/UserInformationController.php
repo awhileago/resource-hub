@@ -12,6 +12,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class UserInformationController extends BaseController
 {
+
+    protected $domains = [
+        '@student.tsu.edu.ph',
+        '@tarlac.sti.edu.ph',
+        '@cldhei.edu.ph',
+        '@pwutarlac.edu.ph'
+    ];
     /**
      * Display a listing of the resource.
      */
@@ -23,6 +30,18 @@ class UserInformationController extends BaseController
         $user = QueryBuilder::for(User::class)
             ->when(isset($request->search), function ($q) use ($request, $columns) {
                 $q->orSearch($columns, 'LIKE', $request->search);
+            })
+            ->when(isset($request->email_used), function ($q) use ($request){
+                $domains = $this->domains;
+                $q->where(function ($query) use ($domains, $request) {
+                    foreach ($domains as $domain) {
+                        if ($request->email_used === 'school') {
+                            $query->orWhere('email', 'LIKE', "%$domain");
+                        } elseif ($request->email_used === 'personal') {
+                            $query->where('email', 'NOT LIKE', "%$domain");
+                        }
+                    }
+                });
             })
             ->when(isset($request->is_verified) && $request->is_verified === 'pending', function ($q) use ($request) {
                 $q->whereNull('user_verified');

@@ -8,11 +8,12 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class UserSkill extends Model
+class UserSkill extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\User/UserSkillFactory> */
-    use HasFactory, HasUlids, FilterByUser;
+    use HasFactory, HasUlids, FilterByUser, \OwenIt\Auditing\Auditable;
 
     public $incrementing = false;
 

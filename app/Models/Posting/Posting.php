@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\DB;
 use MatanYadaev\EloquentSpatial\Enums\Srid;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use MatanYadaev\EloquentSpatial\Traits\HasSpatial;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Posting extends Model
+class Posting extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\Posting/PostingFactory> */
-    use HasFactory, FilterByUser, HasUlids, HasSpatial, HasSearchFilter;
+    use HasFactory, FilterByUser, HasUlids, HasSpatial, HasSearchFilter, \OwenIt\Auditing\Auditable;
 
     public $incrementing = false;
 
@@ -37,6 +38,15 @@ class Posting extends Model
             'coordinates' => Point::class
         ];
     }
+
+    /**
+     * Attributes to exclude from the Audit.
+     *
+     * @var array
+     */
+    protected $auditExclude = [
+        'coordinates',
+    ];
 
     protected function serializeDate(DateTimeInterface $date)
     {

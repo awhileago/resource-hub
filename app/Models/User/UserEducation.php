@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Library\LibEducationLevel;
 use App\Models\Library\LibAcademicProgram;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class UserEducation extends Model
+class UserEducation extends Model implements Auditable
 {
-    use HasFactory, HasUlids, FilterByUser;
+    use HasFactory, HasUlids, FilterByUser, \OwenIt\Auditing\Auditable;
 
     public $incrementing = false;
 

@@ -7,11 +7,12 @@ use App\Traits\FilterByUser;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class PostingMessageTemplate extends Model
+class PostingMessageTemplate extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\Posting/PostingMessageTemplateFactory> */
-    use HasFactory, FilterByUser, HasUlids;
+    use HasFactory, FilterByUser, HasUlids, \OwenIt\Auditing\Auditable;
 
     public $incrementing = false;
 

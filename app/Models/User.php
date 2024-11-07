@@ -25,10 +25,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements MustVerifyEmail, MustVerifyMobileNumber
+class User extends Authenticatable implements  Auditable, MustVerifyEmail, MustVerifyMobileNumber
 {
-    use HasFactory, Notifiable, HasUlids, HasApiTokens, HasSearchFilter, VerifiesMobileNumber;
+    use HasFactory, Notifiable, HasUlids, HasApiTokens, HasSearchFilter, VerifiesMobileNumber, \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

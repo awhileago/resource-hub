@@ -97,7 +97,7 @@ class SendMessageController extends BaseController
     {
         $response = Http::withHeaders([
             'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
-        ])->post(env('TXTBOX_URL'), [
+        ])->post(config('otp.txtbox.url'), [
             'message' => $request->message,
             'number' => $request->contact_number,
         ]);
@@ -114,7 +114,7 @@ class SendMessageController extends BaseController
     {
         $response = Http::withHeaders([
             'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
-        ])->post(env('TXTBOX_URL'), [
+        ])->post(config('otp.txtbox.url'), [
             'message' => $message,
             'number' => $contactNumber,
         ]);

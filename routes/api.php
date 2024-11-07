@@ -90,6 +90,7 @@ Route::prefix('v1')->group(function () {
             Route::get('posting-information/{postingInformation}', 'show')->name('posting-information.show');
             Route::post('posting-information', 'store')->name('posting-information.store');
             Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update');
+            Route::get('public-info', 'publicInfo')->name('posting-information.publicInfo')->withoutMiddleware('auth:api');;
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingApplicationController::class)

@@ -117,4 +117,43 @@ class PostingController extends BaseController
     {
         //
     }
+
+    public function publicInfo(Request $request)
+    {
+        $perPage = $request->per_page ?? self::ITEMS_PER_PAGE;
+
+        $columns = ['title', 'description'];
+        $data = QueryBuilder::for(Posting::class)
+            ->when(isset($request->search), function ($q) use ($request, $columns) {
+                $q->orSearch($columns, 'LIKE', $request->search);
+            })
+            ->when(isset($request->id), function ($q) use ($request, $columns) {
+                $q->whereId($request->id);
+            })
+            ->when(isset($request->lng) && isset($request->lat) && isset($request->radius), function($query) use($request) {
+                $query->whereRaw("ST_Distance_Sphere(coordinates, ST_GeomFromText(?)) <= ?", [
+                    "POINT($request->lng $request->lat)",
+                    $request->radius
+                ]);
+            })
+            ->when(isset($request->is_published), function ($q) use ($request) {
+                if($request->is_published == 'published') {
+                    $q->whereNotNull('date_published');
+                } else {
+                    $q->whereNull('date_published');
+                };
+            })
+            ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {
+                $q->where('lib_posting_category_id', $request->lib_posting_category_id);
+            })
+            ->withCount('applicants')
+            ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
+            ->defaultSort(['date_published', 'title'])
+            ->allowedSorts(['date_published', 'title', 'date_end']);
+        if ($perPage === 'all') {
+            return PostingResource::collection($data->get());
+        }
+
+        return PostingResource::collection($data->paginate($perPage)->withQueryString());
+    }
 }

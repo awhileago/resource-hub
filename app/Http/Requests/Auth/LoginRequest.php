@@ -90,6 +90,11 @@ class LoginRequest extends FormRequest
                 ]);
             }
         }*/
+        if ($user->user_verfied != 1) {
+            throw ValidationException::withMessages([
+                'account_status' => 'Your account is currently pending verification. Please wait for the admin to complete the verification process before you can log in.',
+            ]);
+        }
 
         if (is_null($user->email_verified_at)) {
             // Send email verification if not already sent or expired

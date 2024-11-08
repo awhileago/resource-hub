@@ -9,6 +9,7 @@ use App\Models\Library\LibSuffixName;
 use App\Models\Library\LibSchool;
 use App\Models\Library\LibAcademicProgram;
 use App\Models\Library\LibYearLevel;
+use App\Models\Posting\PostingApplication;
 use App\Models\PSGC\Barangay;
 use App\Models\SMS\SmsLog;
 use App\Models\User\UserEducation;
@@ -156,6 +157,11 @@ class User extends Authenticatable implements  Auditable, MustVerifyEmail, MustV
     public function barangay()
     {
         return $this->belongsTo(Barangay::class, 'barangay_code', 'psgc_10_digit_code');
+    }
+
+    public function smsLogs()
+    {
+        return $this->hasManyThrough(SmsLog::class, PostingApplication::class);
     }
 
 }

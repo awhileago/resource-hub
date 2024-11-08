@@ -48,6 +48,7 @@ class UserInformationResource extends JsonResource
             'employment' => $this->whenLoaded('employment'),
             'reference' => $this->whenLoaded('reference'),
             'skill' => $this->whenLoaded('skill'),
+            'sms_logs' => $this->whenLoaded('smsLogs'),
             'photo_url' => $this->photo_url ? Storage::disk('public')->url($this->photo_url) : null,
             'cor_url' => $this->cor_url ? Storage::disk('public')->url($this->cor_url) : null,
             'grade_url' => $this->grade_url ? Storage::disk('public')->url($this->grade_url) : null,

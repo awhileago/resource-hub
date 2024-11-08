@@ -95,9 +95,7 @@ class SendMessageController extends BaseController
 
     public function sendMessage(Request $request)
     {
-        $response = Http::withHeaders([
-            'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
-        ])->post(env('TXTBOX_URL'), [
+        $response = Http::withHeaders(config('otp.txtbox.headers'))->post(config('otp.txtbox.url'), [
             'message' => $request->message,
             'number' => $request->contact_number,
         ]);
@@ -112,9 +110,7 @@ class SendMessageController extends BaseController
 // Helper function to send SMS
     private function sendSms($contactNumber, $message)
     {
-        $response = Http::withHeaders([
-            'X-TXTBOX-Auth' => env('TXTBOX_API_KEY'),
-        ])->post(env('TXTBOX_URL'), [
+        $response = Http::withHeaders(config('otp.txtbox.headers'))->post(config('otp.txtbox.url'), [
             'message' => $message,
             'number' => $contactNumber,
         ]);

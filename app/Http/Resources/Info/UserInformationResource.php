@@ -44,7 +44,7 @@ class UserInformationResource extends JsonResource
             'parents' => $this->whenLoaded('parents'),
             'academic_program' => $this->whenLoaded('academicProgram'),
             'year_level' => $this->whenLoaded('yearLevel'),
-            'education' => $this->whenLoaded('education'),
+            'user_education' => $this->whenLoaded('userEducation'),
             'employment' => $this->whenLoaded('employment'),
             'reference' => $this->whenLoaded('reference'),
             'skill' => $this->whenLoaded('skill'),

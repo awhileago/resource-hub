@@ -130,7 +130,7 @@ class User extends Authenticatable implements  Auditable, MustVerifyEmail, MustV
 
     public function education()
     {
-        return $this->hasMany(UserEducation::class);
+        return $this->hasMany(UserEducation::class, 'user_id', 'id');
     }
 
     public function employment()

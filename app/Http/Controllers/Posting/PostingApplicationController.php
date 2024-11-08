@@ -36,7 +36,7 @@ class PostingApplicationController extends  BaseController
             ->when(isset($request->application_status) && $request->application_status === 'pending', function ($q) use ($request) {
                 $q->whereNull('is_approved');
             })
-            ->when(isset($request->application_status) && $request->application_status === 'verified', function ($q) use ($request) {
+            ->when(isset($request->application_status) && $request->application_status === 'approved', function ($q) use ($request) {
                 $q->where('is_approved', 1);
             })
             ->when(isset($request->application_status) && $request->application_status === 'rejected', function ($q) use ($request) {

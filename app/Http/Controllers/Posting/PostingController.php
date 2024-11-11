@@ -64,7 +64,12 @@ class PostingController extends BaseController
                 $q->where('lib_posting_category_id', $request->lib_posting_category_id);
             })
             ->when(isset($request->is_published), function ($q) use ($request) {
-                $q->whereNotNull($request->is_published == 'published' ? 'date_published' : 'date_published', null);
+                if($request->is_published == 'published') {
+                    $q->whereNotNull('date_published');
+                } else {
+                    $q->whereNull('date_published');
+                }
+
             })
             ->when(isset($request->start_date), function ($q) use ($request) {
                 $q->where('date_published', '>=', $request->start_date);

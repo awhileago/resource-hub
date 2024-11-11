@@ -119,7 +119,23 @@ class PostingController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        if (!auth()->user()->is_admin) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $posting = Posting::find($id);
+
+        if (!$posting) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        if (!is_null($posting->date_published)) {
+            return response()->json(['message' => 'Cannot delete. Posting has already been published.'], 400);
+        }
+
+        $posting->delete();
+
+        return response()->json(['message' => 'Posting deleted successfully']);
     }
 
     public function publicInfo(Request $request)

@@ -31,7 +31,7 @@ class PostingController extends BaseController
 
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 // Filter to ensure only postings with available slots are shown to non-admins
-                $query->havingRaw('slot > applicants_count')
+                $query->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id)')
                     ->with(['applicants' => function($q) {
                         $q->whereUserId(auth()->id());
                     }]);

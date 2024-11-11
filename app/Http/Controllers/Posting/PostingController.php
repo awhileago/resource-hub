@@ -90,6 +90,9 @@ class PostingController extends BaseController
      */
     public function store(PostingRequest $request)
     {
+        if(!auth()->user()->is_admin) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
         $data = Posting::query()->updateOrCreate(['id' => $request->id], $request->validated());
         return $data;
     }
@@ -105,9 +108,10 @@ class PostingController extends BaseController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Posting $postingInformation)
     {
-        //
+        $data = $postingInformation->update($request->all());
+        return $this->sendResponse($data, 'Posting successfully updated.');
     }
 
     /**

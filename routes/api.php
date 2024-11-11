@@ -66,7 +66,7 @@ Route::prefix('v1/psgc')->group(function () {
 
 Route::prefix('v1')->group(function () {
     Route::controller(\App\Http\Controllers\Info\UserInformationController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('user-information', 'index')->name('user-information.index');
             Route::get('user-information/{userInformation}', 'show')->name('user-information.show');
@@ -75,7 +75,7 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\Info\ParentInformationController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('parent-information', 'index')->name('parent-information.index');
             Route::get('parent-information/{parentInformation}', 'show')->name('parent-information.show');
@@ -84,17 +84,17 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('posting-information', 'index')->name('posting-information.index');
             Route::get('posting-information/{postingInformation}', 'show')->name('posting-information.show');
             Route::post('posting-information', 'store')->name('posting-information.store');
             Route::put('posting-information/{postingInformation}', 'update')->name('posting-information.update');
-            Route::get('public-info', 'publicInfo')->name('posting-information.publicInfo')->withoutMiddleware('auth:api');;
+            Route::get('public-info', 'publicInfo')->name('posting-information.publicInfo')->withoutMiddleware(['auth:api', 'verified']);
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingApplicationController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('posting-application', 'index')->name('posting-application.index');
             Route::get('posting-application/{postingApplication}', 'show')->name('posting-application.show');
@@ -103,14 +103,14 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\User\UserEducationController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('user-education', 'index')->name('user-education.index');
             Route::post('user-education', 'store')->name('user-education.store');
         });
 
     Route::controller(\App\Http\Controllers\User\UserEmploymentController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('user-employment', 'index')->name('user-employment.index');
             Route::get('user-employment/{userEmployment}', 'show')->name('user-employment.show');
@@ -119,7 +119,7 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\User\UserReferenceController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('user-reference', 'index')->name('user-reference.index');
             Route::get('user-reference/{userReference}', 'show')->name('user-reference.show');
@@ -128,7 +128,7 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\User\UserSkillController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('user-skill', 'index')->name('user-skill.index');
             Route::get('user-skill/{userSkill}', 'show')->name('user-skill.show');
@@ -137,7 +137,7 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\Posting\PostingMessageTemplateController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::get('message-template', 'index')->name('message-template.index');
             Route::get('message-template/{messageTemplate}', 'show')->name('message-template.show');
@@ -146,7 +146,7 @@ Route::prefix('v1')->group(function () {
         });
 
     Route::controller(\App\Http\Controllers\SMS\SendMessageController::class)
-        ->middleware('auth:api')
+        ->middleware(['auth:api', 'verified'])
         ->group(function () {
             Route::post('send-sms', 'sendMessage')->name('send-sms.sendMessage');
             Route::post('send-bulk-sms', 'sendBulkMessages')->name('send--bulk-sms.sendBulkMessages');

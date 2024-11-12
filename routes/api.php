@@ -19,6 +19,8 @@ Route::get('email/resend', [\App\Http\Controllers\Auth\VerificationController::c
 Route::get('check-email', [\App\Http\Controllers\Auth\VerificationController::class, 'checkEmail'])->name('verification.checkEmail');
 Route::post('/verify-otp', [\App\Http\Controllers\SMS\OtpController::class, 'verifyOtp'])->name('otp.verify');
 Route::post('/resend-otp', [\App\Http\Controllers\SMS\OtpController::class, 'resendOtp'])->name('otp.resend');
+Route::post('forgot-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'sendResetLinkEmail']);
+Route::post('reset-password', [\App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.reset');
 //Route::get('/email/verify', function () {
 //    return view('auth.verify-email');
 //})->middleware('auth')->name('verification.notice');

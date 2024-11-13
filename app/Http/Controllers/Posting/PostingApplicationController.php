@@ -42,6 +42,9 @@ class PostingApplicationController extends  BaseController
             ->when(isset($request->application_status) && $request->application_status === 'rejected', function ($q) use ($request) {
                 $q->where('is_approved', 0);
             })
+            ->when(isset($request->is_applied), function ($q) use ($request) {
+                $q->where('is_applied', $request->is_applied);
+            })
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 $query->whereUserId(auth()->id());
             })

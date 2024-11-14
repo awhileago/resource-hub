@@ -9,12 +9,13 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class PostingApplication extends Model implements Auditable
 {
     /** @use HasFactory<\Database\Factories\Posting/PostingApplicationFactory> */
-    use HasFactory, FilterByUser, HasUlids, \OwenIt\Auditing\Auditable;
+    use HasFactory, FilterByUser, HasUlids, \OwenIt\Auditing\Auditable, SoftDeletes;
 
     public $incrementing = false;
 

@@ -103,6 +103,7 @@ Route::prefix('v1')->group(function () {
             Route::get('posting-application/{postingApplication}', 'show')->name('posting-application.show');
             Route::post('posting-application', 'store')->name('posting-application.store');
             Route::put('posting-application/{postingApplication}', 'update')->name('posting-application.update');
+            Route::delete('posting-application/{id}', 'destroy')->name('posting-application.destroy');
         });
 
     Route::controller(\App\Http\Controllers\User\UserEducationController::class)

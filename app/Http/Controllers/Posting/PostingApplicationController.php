@@ -6,8 +6,12 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Posting\PostingApplicationRequest;
 use App\Http\Resources\Posting\PostingApplicationResource;
+use App\Models\Posting\Posting;
 use App\Models\Posting\PostingApplication;
+use App\Models\User;
+use App\Notifications\PostingFullNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class PostingApplicationController extends  BaseController
@@ -63,8 +67,18 @@ class PostingApplicationController extends  BaseController
      */
     public function store(PostingApplicationRequest $request)
     {
-        $data = PostingApplication::query()->updateOrCreate(['posting_id' => $request->posting_id, 'user_id' => auth()->id()], $request->validated());
-        return $data;
+        $posting = Posting::query()->find($request->posting_id);
+        if ($posting->applicants()->where('is_applied', 1)->count() >= $posting->slot) {
+            return $this->sendError('Posting slot is full', 'User information successfully updated.');
+        }
+
+        $application = PostingApplication::query()->updateOrCreate(['posting_id' => $request->posting_id, 'user_id' => auth()->id()], $request->validated());
+
+        if ($posting->applicants()->where('is_applied', 1)->count() >= $posting->slot) {
+            $admins = User::query()->whereIsAdmin(1)->get();
+            Notification::send($admins, new PostingFullNotification($posting));
+        }
+        return $application;
     }
 
     /**
@@ -89,6 +103,18 @@ class PostingApplicationController extends  BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $posting = PostingApplication::find($id);
+
+        if (!$posting) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+
+        if (!is_null($posting->is_approved)) {
+            return response()->json(['message' => 'Deletion not allowed. The posting application is already in process.'], 400);
+        }
+
+        $posting->delete();
+
+        return response()->json(['message' => 'Posting application deleted successfully']);
     }
 }

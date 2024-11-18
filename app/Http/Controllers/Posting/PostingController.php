@@ -27,11 +27,14 @@ class PostingController extends BaseController
             ->when(isset($request->id), function ($q) use ($request) {
                 $q->whereId($request->id);
             })
-            ->withCount('applicants') // Global applicant count for filtering
+            ->withCount(['applicants as applicants_count' => function ($query) {
+                $query->where('is_applied', 1);
+            }]) // Global applicant count for filtering; Altered to get only application that have is_applied = 1
 
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 // Filter to ensure only postings with available slots are shown to non-admins
-                $query->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id)')
+                // Added argument to get only application with is_applied = 1;
+                $query->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_applied = 1)')
                     ->with(['applicants' => function($q) {
                         $q->whereUserId(auth()->id());
                     }]);
@@ -176,7 +179,15 @@ class PostingController extends BaseController
             ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {
                 $q->where('lib_posting_category_id', $request->lib_posting_category_id);
             })
-            ->withCount('applicants')
+
+            ->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_applied = 1)')
+            ->with(['applicants' => function($q) {
+                $q->whereUserId(auth()->id());
+            }])
+
+            ->withCount(['applicants as applicants_count' => function ($query) {
+                $query->where('is_applied', 1);
+            }])
             ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
             ->defaultSort(['date_published', 'title'])
             ->allowedSorts(['date_published', 'title', 'date_end']);

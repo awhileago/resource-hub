@@ -38,6 +38,7 @@ class UserInformationResource extends JsonResource
             'school' => $this->whenLoaded('school'),
             'lib_education_level_id' => $this->lib_education_level_id,
             'lib_year_level_id' => $this->lib_year_level_id,
+            'lib_academic_program_id' => $this->lib_academic_program_id,
             'scholar_flag' => $this->scholar_flag,
             'shiftee_flag' => $this->shiftee_flag,
             'irregular_flag' => $this->irregular_flag,

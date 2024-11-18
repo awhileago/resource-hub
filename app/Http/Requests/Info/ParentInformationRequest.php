@@ -29,6 +29,7 @@ class ParentInformationRequest extends FormRequest
             'mothers_occupation' => 'nullable',
             'mothers_company' => 'nullable',
             'average_monthly_income' => 'nullable',
+            'ofw_flag' => 'required|boolean',
         ];
     }
 }

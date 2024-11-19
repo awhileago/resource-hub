@@ -50,12 +50,12 @@ class UserInformationResource extends JsonResource
             'reference' => $this->whenLoaded('reference'),
             'skill' => $this->whenLoaded('skill'),
             'sms_logs' => $this->whenLoaded('smsLogs'),
-            /* 'photo_url' => $this->photo_url,
+            'photo_url' => $this->photo_url,
             'cor_url' => $this->cor_url,
-            'grade_url' => $this->grade_url, */
-            'photo_url' => $this->photo_url ? Storage::disk('public')->url($this->photo_url) : null,
+            'grade_url' => $this->grade_url,
+            /* 'photo_url' => $this->photo_url ? Storage::disk('public')->url($this->photo_url) : null,
             'cor_url' => $this->cor_url ? Storage::disk('public')->url($this->cor_url) : null,
-            'grade_url' => $this->grade_url ? Storage::disk('public')->url($this->grade_url) : null,
+            'grade_url' => $this->grade_url ? Storage::disk('public')->url($this->grade_url) : null, */
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

@@ -69,8 +69,8 @@ class UserInformationController extends BaseController
             })
             ->with(['school', 'academicProgram', 'yearLevel', 'smsLogs'])
             ->allowedIncludes('suffixName')
-            ->defaultSort(['last_name', 'first_name', 'middle_name', 'birthdate'])
-            ->allowedSorts(['last_name', 'first_name', 'middle_name', 'birthdate']);
+            ->defaultSort(['created_at', 'last_name', 'first_name', 'middle_name', 'birthdate'])
+            ->allowedSorts(['created_at', 'last_name', 'first_name', 'middle_name', 'birthdate']);
 
         if ($perPage === 'all') {
             return UserInformationResource::collection($user->get());

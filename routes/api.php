@@ -154,6 +154,7 @@ Route::prefix('v1')->group(function () {
         ->group(function () {
             Route::post('send-sms', 'sendMessage')->name('send-sms.sendMessage');
             Route::post('send-bulk-sms', 'sendBulkMessages')->name('send--bulk-sms.sendBulkMessages');
+            Route::post('send-interview-sms', 'sendInterviewMessages')->name('send--bulk-sms.sendInterviewMessages');
 //            Route::get('posting-application/{postingApplication}', 'show')->name('posting-application.show');
 //            Route::post('posting-application', 'store')->name('posting-application.store');
 //            Route::put('posting-application/{postingApplication}', 'update')->name('posting-application.update');

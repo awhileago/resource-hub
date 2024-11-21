@@ -8,6 +8,7 @@ use App\Http\Requests\Info\UserRequest;
 use App\Http\Resources\Info\UserInformationResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserInformationController extends BaseController
@@ -105,6 +106,34 @@ class UserInformationController extends BaseController
      */
     public function update(Request $request, User $userInformation)
     {
+        $photoPath = null;
+        $corPath = null;
+        $gradePath = null;
+        // Handling photo upload
+        if ($request->hasFile('photo_url')) {
+            //$photoPath = $request->file('photo_url')->store('uploads/photos', 'public');
+            $photoFile = $request->file('photo_url');
+            $newPhotoName = Str::ulid() . '.' . $photoFile->getClientOriginalExtension();  // Generate unique name
+            $photoPath = $photoFile->storeAs('uploads/photos', $newPhotoName, 'public');
+            $request->photo_url = $photoPath;
+        }
+
+        // Handling document upload
+        if ($request->hasFile('cor_url')) {
+            //$corPath = $request->file('cor_url')->store('uploads/documents', 'public');
+            $corFile = $request->file('cor_url');
+            $newCorName = Str::ulid() . '.' . $corFile->getClientOriginalExtension();  // Generate unique name
+            $corPath = $corFile->storeAs('uploads/documents', $newCorName, 'public');
+            $request->cor_url = $corPath;
+        }
+
+        if ($request->hasFile('grade_url')) {
+            //$gradePath = $request->file('grade_url')->store('uploads/documents', 'public');
+            $gradeFile = $request->file('grade_url');
+            $newGradeName = Str::ulid() . '.' . $gradeFile->getClientOriginalExtension();  // Generate unique name
+            $corPath = $gradeFile->storeAs('uploads/documents', $newGradeName, 'public');
+            $request->grade_url = $corPath;
+        }
         $userInformation->update($request->all());
         return $this->sendResponse($userInformation, 'User information successfully updated.');
     }

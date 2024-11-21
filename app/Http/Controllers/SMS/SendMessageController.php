@@ -95,11 +95,34 @@ class SendMessageController extends BaseController
 
     public function sendMessage(Request $request)
     {
-        $response = Http::withHeaders(config('otp.txtbox.headers'))->post(config('otp.txtbox.url'), [
-            'message' => $request->message,
-            'number' => $request->contact_number,
-        ]);
+        try {
+            $response = Http::withHeaders(config('otp.txtbox.headers'))->post(config('otp.txtbox.url'), [
+                'message' => $request->message,
+                'number' => $request->contact_number,
+            ]);
 
+            if ($response->failed()) {
+                throw new \Exception('Failed to send SMS via Txtbox: ' . $response->body());
+            }
+            SmsLog::create([
+                'user_id' => $request->user_id,
+                'contact_number' => $request->contact_number,
+                'message' => $request->message,
+                'status' => 'success',
+                'error_message' => '',
+            ]);
+        } catch (\Exception $e) {
+            // Log failed SMS send
+            SmsLog::create([
+                'user_id' => $request->user_id,
+                'contact_number' => $request->contact_number,
+                'message' => $request->message,
+                'status' => 'failed',
+                'error_message' => $e->getMessage(),
+                ]);
+            // Log or handle failed SMS sending
+            Log::error("Failed to send SMS to {$request->contact_number}: {$e->getMessage()}");
+        }
         if ($response->failed()) {
             throw new \Exception('Failed to send SMS via Txtbox: ' . $response->body());
         }

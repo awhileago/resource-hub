@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -18,6 +19,11 @@ class PostingFullNotification extends Notification
     public function __construct($posting)
     {
         $this->posting = $posting;
+    }
+
+    public function broadcastOn()
+    {
+        return new Channel('notifications');
     }
 
     /**
@@ -41,7 +47,8 @@ class PostingFullNotification extends Notification
             'data' => [
                 'title' => 'Posting Application Full',
                 'message' => "The posting '{$this->posting->title}' has reached full application capacity.",
-                'url' => url("/postings/{$this->posting->id}"),
+                'url' => route('posting-information.show', ['posting' => $this->posting->id]),
+                //'url' => url("/postings/{$this->posting->id}"),
             ]
         ];
     }
@@ -52,7 +59,8 @@ class PostingFullNotification extends Notification
             'data' => [
                 'title' => 'Posting Application Full',
                 'message' => "The posting '{$this->posting->title}' has reached full application capacity.",
-                'url' => url('/postings/' . $this->posting->id),
+                'url' => route('posting-information.show', ['posting' => $this->posting->id]),
+                //'url' => url('/postings/' . $this->posting->id),
             ],
         ];
     }

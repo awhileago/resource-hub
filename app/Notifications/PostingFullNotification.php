@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -23,7 +24,7 @@ class PostingFullNotification extends Notification
 
     public function broadcastOn()
     {
-        return new Channel('notifications');
+        return new PrivateChannel('notifications');
     }
 
     /**

@@ -161,6 +161,11 @@ class User extends Authenticatable implements  Auditable, MustVerifyEmail, MustV
 
     public function smsLogs()
     {
+        return $this->hasMany(SmsLog::class, 'user_id', 'id');
+    }
+
+    public function smsLogsPosting()
+    {
         return $this->hasManyThrough(SmsLog::class, PostingApplication::class);
     }
 

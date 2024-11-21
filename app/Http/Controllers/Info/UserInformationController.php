@@ -44,6 +44,11 @@ class UserInformationController extends BaseController
                     }
                 });
             })
+            // Filter based on months
+            ->when(isset($request->months), function ($q) use ($request) {
+                $months = (int) $request->months;
+                $q->where('last_seen_at', '>=', Carbon::now()->subMonths($months));
+            })
             ->when(isset($request->is_verified) && $request->is_verified === 'pending', function ($q) use ($request) {
                 $q->whereNull('user_verified');
             })

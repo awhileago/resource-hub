@@ -16,6 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified.email_or_mobile', \App\Http\Middleware\EnsureEmailOrMobileIsVerified::class
         ]);
+        $middleware->use([
+            \App\Http\Middleware\UpdateLastSeen::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

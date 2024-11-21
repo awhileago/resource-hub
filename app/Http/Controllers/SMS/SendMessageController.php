@@ -46,9 +46,23 @@ class SendMessageController extends BaseController
         $approvedApplicants = PostingApplication::where('posting_id', $request->posting_id)
             ->where('is_applied', 1)
             ->whereNotNull('is_approved')
-            ->whereDoesntHave('smsLogs')
-            ->orWhereHas('smsLogs', function ($q) {
-                $q->where('status', 'failed');
+            ->where(function ($q) {
+                // No smsLogs
+                $q->whereDoesntHave('smsLogs')
+                    ->orWhereHas('smsLogs', function ($subQuery) {
+                        $subQuery->where(function ($q) {
+                            // Status failed and for_interview is 1
+                            $q->where('status', 'failed')
+                                ->where(function ($q) {
+                                    $q->where('for_interview', '!=', 1)
+                                        ->orWhereNull('for_interview');
+                                });
+                        })->orWhere(function ($q) {
+                            // Status success and for_interview is not 1 or is NULL
+                            $q->where('status', 'success')
+                                ->where('for_interview', 1);
+                        });
+                    });
             })
             ->get();
 
@@ -65,7 +79,9 @@ class SendMessageController extends BaseController
                 $this->sendSms($contactNumber, $mobileMessage);
                 SmsLog::updateOrCreate([
                     'posting_application_id' => $applicant->id,
-                    'user_id' => $applicant->user->id,],
+                    'user_id' => $applicant->user->id,
+                    'for_interview' => 0,
+                    ],
                     [
                     'contact_number' => $contactNumber,
                     'message' => $mobileMessage,
@@ -78,13 +94,88 @@ class SendMessageController extends BaseController
                 // Log failed SMS send
                 SmsLog::updateOrCreate([
                     'posting_application_id' => $applicant->id,
-                    'user_id' => $applicant->user->id],
+                    'user_id' => $applicant->user->id,
+                    'for_interview' => 0,
+                    ],
                     [
                     'contact_number' => $contactNumber,
-                    'message' => $message,
+                    'message' => $mobileMessage,
                     'status' => 'failed',
                     'error_message' => $e->getMessage(),
                 ]);
+                // Log or handle failed SMS sending
+                Log::error("Failed to send SMS to {$contactNumber}: {$e->getMessage()}");
+            }
+        }
+
+        return response()->json(['message' => 'Messages sent successfully!']);
+    }
+
+    public function sendInterviewMessages(Request $request)
+    {
+        // Get the posting
+        $posting = Posting::findOrFail($request->posting_id);
+
+        // Get the message template
+        $message = PostingMessageTemplate::where('posting_id', $request->posting_id)->firstOrFail();
+        // Get all approved applicants
+        $applicants = PostingApplication::where('posting_id', $request->posting_id)
+            ->where('is_applied', 1)
+            ->whereNotNull('is_approved')
+            ->where(function ($q) {
+                // No smsLogs
+                $q->whereDoesntHave('smsLogs')
+                    ->orWhereHas('smsLogs', function ($subQuery) {
+                        $subQuery->where(function ($q) {
+                            // Status failed and for_interview is 1
+                            $q->where('status', 'failed')
+                                ->where('for_interview', 1);
+                        })->orWhere(function ($q) {
+                            // Status success and for_interview is not 1 or is NULL
+                            $q->where('status', 'success')
+                                ->where(function ($q) {
+                                    $q->where('for_interview', '!=', 1)
+                                        ->orWhereNull('for_interview');
+                                });
+                        });
+                    });
+            })
+            ->get();
+
+        foreach ($applicants as $applicant) {
+            $contactNumber = $applicant->user->contact_number;
+            // Customize the message if needed (e.g., adding applicant name)
+            $interviewMessage = $message->interview_message;
+
+            $interviewMessage = str_replace('{name}', $applicant->user->first_name . ' ' . $applicant->user->last_name, $interviewMessage);
+            // Send SMS
+            try {
+                $this->sendSms($contactNumber, $interviewMessage);
+                SmsLog::updateOrCreate([
+                    'posting_application_id' => $applicant->id,
+                    'user_id' => $applicant->user->id,
+                    'for_interview' => 1,
+                    ],
+                    [
+                        'contact_number' => $contactNumber,
+                        'message' => $interviewMessage,
+                        'status' => 'success',
+                        'error_message' => '',
+                    ]);
+
+            } catch (\Exception $e) {
+                // Log failed SMS send
+                SmsLog::updateOrCreate([
+                    'posting_application_id' => $applicant->id,
+                    'user_id' => $applicant->user->id,
+                    'for_interview' => 1,
+                    ],
+                    [
+                        'contact_number' => $contactNumber,
+                        'message' => $interviewMessage,
+                        'status' => 'failed',
+                        'error_message' => $e->getMessage(),
+                    ]);
                 // Log or handle failed SMS sending
                 Log::error("Failed to send SMS to {$contactNumber}: {$e->getMessage()}");
             }
@@ -104,13 +195,18 @@ class SendMessageController extends BaseController
             if ($response->failed()) {
                 throw new \Exception('Failed to send SMS via Txtbox: ' . $response->body());
             }
-            SmsLog::create([
+            $smsLogs = SmsLog::create([
                 'user_id' => $request->user_id,
                 'contact_number' => $request->contact_number,
                 'message' => $request->message,
                 'status' => 'success',
                 'error_message' => '',
             ]);
+
+            //dd(SmsLog::query()->whereUserId($request->user_id)->count());
+            //dd($smsLogs->where('user_id', $request->user_id)->count());
+            return $this->sendResponse($smsLogs->where('user_id', $request->user_id)->get(), 'Messages sent successfully!');
+
         } catch (\Exception $e) {
             // Log failed SMS send
             SmsLog::create([

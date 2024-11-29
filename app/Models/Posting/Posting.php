@@ -92,4 +92,9 @@ class Posting extends Model implements Auditable
     {
         return $this->hasMany(PostingApplication::class);
     }
+
+    public function approvedApplicants()
+    {
+        return $this->hasMany(PostingApplication::class)->where('is_approved', '=', 1);
+    }
 }

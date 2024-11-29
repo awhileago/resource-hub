@@ -28,15 +28,16 @@ class PostingController extends BaseController
                 $q->whereId($request->id);
             })
             ->withCount('applicants') // Global applicant count for filtering
+            ->withCount('approvedApplicants')
             ->when(isset($request->slots_filled) && $request->slots_filled == 'filled', function ($q) use ($request) {
-                $q->whereRaw('slot <= (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_applied = 1)');
+                $q->whereRaw('slot <= (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_approved = 1)');
             })
             ->when(isset($request->slots_filled) && $request->slots_filled == 'unfilled', function ($q) use ($request) {
                 $q->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id)');
             })
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 // Filter to ensure only postings with available slots are shown to non-admins
-                $query->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_applied = 1)')
+                $query->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_approved = 1)')
                     ->with(['applicants' => function($q) {
                         $q->whereUserId(auth()->id());
                     }]);
@@ -88,7 +89,7 @@ class PostingController extends BaseController
                 });
             })
             ->with('barangay.geographic')
-            ->allowedIncludes(['category', 'barangay', 'user', 'applicants'])
+            ->allowedIncludes(['category', 'barangay', 'user', 'applicants', 'approvedApplicants'])
             ->defaultSort(['date_published', 'title'])
             ->allowedSorts(['date_published', 'title', 'date_end']);
 

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->decimal('gwa',3,2)->after('lib_year_level_id');
-            $table->boolean('pwd_flag')->default(0)->after('irregular_flag');
+        Schema::table('parent_information', function (Blueprint $table) {
+            $table->boolean('solo_parent_flag')->default(0)->after('ofw_flag');
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('gwa');
-            $table->dropColumn('pwd_flag');
+        Schema::table('parent_information', function (Blueprint $table) {
+            $table->dropColumn('solo_parent_flag');
         });
     }
 };

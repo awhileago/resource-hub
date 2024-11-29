@@ -72,6 +72,7 @@ class User extends Authenticatable implements  Auditable, MustVerifyEmail, MustV
             'irregular_flag' => 'boolean',
             'scholar_flag' => 'boolean',
             'shiftee_flag' => 'boolean',
+            'pwd_flag' => 'boolean',
         ];
     }
 

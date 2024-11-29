@@ -36,6 +36,8 @@ class PostingResource extends JsonResource
             'no_shiftee_flag' => $this->no_shiftee_flag,
             'no_irregular_flag' => $this->no_irregular_flag,
             'posting_applications_count' => $this->applicants_count,
+            'posting_approved_applications_count' => $this->approved_applicants_count,
+            'posting_approved_applications' => $this->whenLoaded('approvedApplicants'),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

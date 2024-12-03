@@ -33,6 +33,7 @@ class Posting extends Model implements Auditable
     protected function casts(): array
     {
         return [
+            'closed_date' => 'datetime:Y-m-d',
             'date_published' => 'datetime:Y-m-d',
             'date_end' => 'datetime:Y-m-d',
             'coordinates' => Point::class

@@ -19,6 +19,8 @@ class PostingResource extends JsonResource
             'user_id' => $this->when(! $this->relationLoaded('user'), $this->user_id),
             'user' => $this->whenLoaded('user'),
             'date_published' => isset($this->date_published) ? $this->date_published->format('Y-m-d') : null,
+            'post_closed_flag' => $this->post_closed_flag,
+            'closed_date' => isset($this->closed_date) ? $this->closed_date->format('Y-m-d') : null,
             'date_end' => $this->date_end->format('Y-m-d'),
             'lib_posting_category_id' => $this->when(! $this->relationLoaded('category'), $this->lib_posting_category_id),
             'posting_category' => $this->whenLoaded('category'),

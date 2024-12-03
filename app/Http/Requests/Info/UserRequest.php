@@ -53,7 +53,10 @@ class UserRequest extends FormRequest
             'irregular_flag' => 'nullable|boolean',
             'scholar_flag' => 'nullable|boolean',
             'shiftee_flag' => 'nullable|boolean',
+            'pwd_flag' => 'nullable|boolean',
+            'gwa' => 'required',
 
+            'solo_parent_flag' => 'nullable|boolean',
             'ofw_flag' => 'nullable|boolean',
             'fathers_name' => 'nullable',
             'fathers_occupation' => 'nullable',

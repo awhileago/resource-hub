@@ -32,8 +32,8 @@ class AuthController extends BaseController
      */
     public function register(UserRequest $request): JsonResponse
     {
-        $userInput = $request->safe()->except(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
-        $parentInput = $request->safe()->only(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income']);
+        $userInput = $request->safe()->except(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income','solo_parent_flag']);
+        $parentInput = $request->safe()->only(['fathers_name','fathers_occupation','fathers_company','mothers_name','mothers_occupation','mothers_company','average_monthly_income','solo_parent_flag']);
 
         return DB::transaction(function() use($userInput, $parentInput, $request){
             $photoPath = null;

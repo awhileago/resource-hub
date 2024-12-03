@@ -35,6 +35,17 @@ class PostingResource extends JsonResource
             'no_ofw_flag' => $this->no_ofw_flag,
             'no_shiftee_flag' => $this->no_shiftee_flag,
             'no_irregular_flag' => $this->no_irregular_flag,
+
+            'solo_parent_flag' => $this->solo_parent_flag,
+            'pwd_flag' => $this->pwd_flag,
+            'gwa' => $this->gwa,
+            'lib_academic_program_id' => $this->lib_academic_program_id,
+            'academic_program' => $this->whenLoaded('academicProgram'),
+            'lib_year_level_id' => $this->lib_year_level_id,
+            'year_level' => $this->whenLoaded('yearLevel'),
+            'lib_average_monthly_income_id' => $this->lib_average_monthly_income_id,
+            'monthly_income' => $this->whenLoaded('monthlyIncome'),
+
             'posting_applications_count' => $this->applicants_count,
             'posting_approved_applications_count' => $this->approved_applicants_count,
             'posting_approved_applications' => $this->whenLoaded('approvedApplicants'),

@@ -62,8 +62,33 @@ class PostingController extends BaseController
                     $query->where('no_irregular_flag', 0);
                 }
 
+                if(auth()->user()->pwd_flag) {
+                    $query->where('pwd_flag', 1);
+                }
+
+                if(auth()->user()->gwa) {
+                    $query->where('gwa', '>=', auth()->user()->gwa);
+                }
+
+                if(auth()->user()->lib_year_level_id) {
+                    $query->where('lib_year_level_id', auth()->user()->lib_year_level_id);
+                }
+
+                if(auth()->user()->lib_academic_program_id) {
+                    $query->where('lib_academic_program_id', auth()->user()->lib_academic_program_id);
+                }
+
+                $parent = auth()->user()->parents()->first();
+                if ($parent && $parent->average_monthly_income) {
+                    $query->where('lib_average_monthly_income_id', $parent->average_monthly_income);
+                }
+
                 if (auth()->user()->parents()->where('ofw_flag', 1)->exists()) {
                     $query->where('no_ofw_flag', 0);
+                }
+
+                if (auth()->user()->parents()->where('solo_parent_flag', 0)->exists()) {
+                    $query->where('solo_parent_flag', 0);
                 }
             })
             ->when(isset($request->lib_posting_category_id), function ($q) use ($request) {

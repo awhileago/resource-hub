@@ -23,6 +23,8 @@ class PostingApplicationResource extends JsonResource
             'is_save' => $this->is_save,
             'is_applied' => $this->is_applied,
             'date_applied' => isset($this->date_applied) ? $this->date_applied->format('Y-m-d') : null,
+            'is_approved_interview' => $this->is_approved_interview,
+            'interview_status_date' => isset($this->interview_status_date) ? $this->interview_status_date->format('Y-m-d') : null,
             'is_approved' => $this->is_approved,
             'status_date' => isset($this->status_date) ? $this->status_date->format('Y-m-d') : null,
             'remarks' => $this->remarks,

@@ -26,6 +26,7 @@ class PostingApplicationRequest extends FormRequest
             'is_save' => 'nullable',
             'is_applied' => 'nullable',
             'date_applied' => 'nullable|date|date_format:Y-m-d|before:tomorrow',
+            'is_approved_interview' => 'nullable',
             'is_approved' => 'nullable',
             'remarks' => 'nullable',
         ];

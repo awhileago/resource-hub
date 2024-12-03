@@ -35,6 +35,14 @@ class PostingRequest extends FormRequest
             'no_ofw_flag' => 'required',
             'no_shiftee_flag' => 'required',
             'no_irregular_flag' => 'required',
+            'no_irregular_flag' => 'required',
+            'no_irregular_flag' => 'required',
+            'solo_parent_flag' => 'required',
+            'pwd_flag' => 'required',
+            'gwa' => 'nullable',
+            'lib_academic_program_id' => 'nullable',
+            'lib_year_level_id' => 'nullable',
+            'lib_average_monthly_income_id' => 'nullable'
         ];
     }
 }

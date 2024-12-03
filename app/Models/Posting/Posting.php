@@ -97,4 +97,19 @@ class Posting extends Model implements Auditable
     {
         return $this->hasMany(PostingApplication::class)->where('is_approved', '=', 1);
     }
+
+    public function academicProgram()
+    {
+        return $this->belongsTo(LibAcademicProgram::class);
+    }
+
+    public function yearLevel()
+    {
+        return $this->belongsTo(LibYearLevel::class);
+    }
+
+    public function monthlyIncome()
+    {
+        return $this->belongTo(LibAverageMonthlyIncome::class);
+    }
 }

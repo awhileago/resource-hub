@@ -71,19 +71,26 @@ class PostingController extends BaseController
                 }
 
                 if(auth()->user()->lib_year_level_id) {
-                    $query->where('lib_year_level_id', auth()->user()->lib_year_level_id)
-                    ->orWhereNull('lib_year_level_id');
+                    $query->where(function ($q) {
+                        $q->where('lib_year_level_id', auth()->user()->lib_year_level_id)
+                        ->orWhereNull('lib_year_level_id');
+                    });
+
                 }
 
                 if(auth()->user()->lib_academic_program_id) {
-                    $query->where('lib_academic_program_id', auth()->user()->lib_academic_program_id)
-                    ->orWhereNull('lib_academic_program_id');
+                    $query->where(function ($q) {
+                        $q->where('lib_academic_program_id', auth()->user()->lib_academic_program_id)
+                        ->orWhereNull('lib_academic_program_id');
+                    });
                 }
 
                 $parent = auth()->user()->parents()->first();
                 if ($parent && $parent->average_monthly_income) {
-                    $query->where('lib_average_monthly_income_id', $parent->average_monthly_income)
-                    ->orWhereNull('lib_average_monthly_income_id');
+                    $query->where(function ($q) use($parent) {
+                        $q->where('lib_average_monthly_income_id', $parent->average_monthly_income)
+                        ->orWhereNull('lib_average_monthly_income_id');
+                    });
                 }
 
                 if (auth()->user()->parents()->where('ofw_flag', 1)->exists()) {

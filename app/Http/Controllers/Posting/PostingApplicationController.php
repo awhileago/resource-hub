@@ -65,13 +65,13 @@ class PostingApplicationController extends  BaseController
     public function store(PostingApplicationRequest $request)
     {
         $posting = Posting::query()->find($request->posting_id);
-        if ($posting->applicants()->where('is_applied', 1)->count() >= $posting->slot) {
+        if ($posting->applicants()->where('is_approved', 1)->count() >= $posting->slot) {
             return $this->sendError('Posting slot is full', 'User information successfully updated.');
         }
 
         $application = PostingApplication::query()->updateOrCreate(['posting_id' => $request->posting_id, 'user_id' => auth()->id()], $request->validated());
 
-        if ($posting->applicants()->where('is_applied', 1)->count() >= $posting->slot) {
+        if ($posting->applicants()->where('is_approved', 1)->count() >= $posting->slot) {
             $admins = User::query()->whereIsAdmin(1)->get();
             Notification::send($admins, new PostingFullNotification($posting));
         }

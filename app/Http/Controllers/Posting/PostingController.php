@@ -33,7 +33,7 @@ class PostingController extends BaseController
                 $q->whereRaw('slot <= (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_approved = 1)');
             })
             ->when(isset($request->slots_filled) && $request->slots_filled == 'unfilled', function ($q) use ($request) {
-                $q->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id)');
+                $q->whereRaw('slot > (select count(*) from posting_applications where postings.id = posting_applications.posting_id AND is_approved != 1)');
             })
             ->when(!auth()->user()->is_admin, function($query) use($request) {
                 // Filter to ensure only postings with available slots are shown to non-admins
@@ -62,8 +62,8 @@ class PostingController extends BaseController
                     $query->where('no_irregular_flag', 0);
                 }
 
-                if(auth()->user()->pwd_flag) {
-                    $query->where('pwd_flag', 1);
+                if(auth()->user()->pwd_flag === 0) {
+                    $query->where('pwd_flag', 0);
                 }
 
                 if(auth()->user()->gwa) {

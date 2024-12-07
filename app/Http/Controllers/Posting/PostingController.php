@@ -62,7 +62,7 @@ class PostingController extends BaseController
                     $query->where('no_irregular_flag', 0);
                 }
 
-                if(auth()->user()->pwd_flag === 0) {
+                if(auth()->user()->pwd_flag == 0 || !auth()->user()->pwd_flag) {
                     $query->where('pwd_flag', 0);
                 }
 
@@ -88,7 +88,7 @@ class PostingController extends BaseController
                 $parent = auth()->user()->parents()->first();
                 if ($parent && $parent->average_monthly_income) {
                     $query->where(function ($q) use($parent) {
-                        $q->where('lib_average_monthly_income_id', $parent->average_monthly_income)
+                        $q->where('lib_average_monthly_income_id', '>=', $parent->average_monthly_income)
                         ->orWhereNull('lib_average_monthly_income_id');
                     });
                 }

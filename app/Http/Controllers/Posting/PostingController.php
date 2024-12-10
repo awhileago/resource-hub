@@ -17,6 +17,7 @@ class PostingController extends BaseController
      */
     public function index(Request $request)
     {
+        // return [auth()->user()->gwa];
         $perPage = $request->per_page ?? self::ITEMS_PER_PAGE;
 
         $columns = ['title', 'description'];
@@ -62,12 +63,17 @@ class PostingController extends BaseController
                     $query->where('no_irregular_flag', 0);
                 }
 
-                if(auth()->user()->pwd_flag == 0 || !auth()->user()->pwd_flag) {
+                if(!auth()->user()->pwd_flag) {
                     $query->where('pwd_flag', 0);
                 }
 
+                
                 if(auth()->user()->gwa) {
-                    $query->where('gwa', '>=', auth()->user()->gwa);
+                    // $query->where('gwa', '>=', auth()->user()->gwa);
+                    $query->where(function ($q) {
+                        $q->where('gwa', '>=', floatval(auth()->user()->gwa))
+                        ->orWhereNull('gwa');
+                    });
                 }
 
                 if(auth()->user()->lib_year_level_id) {
@@ -93,11 +99,11 @@ class PostingController extends BaseController
                     });
                 }
 
-                if (auth()->user()->parents()->where('ofw_flag', 1)->exists()) {
+                if ($parent->ofw_flag) {
                     $query->where('no_ofw_flag', 0);
                 }
 
-                if (auth()->user()->parents()->where('solo_parent_flag', 0)->exists()) {
+                if (!$parent->solo_parent_flag) {
                     $query->where('solo_parent_flag', 0);
                 }
             })

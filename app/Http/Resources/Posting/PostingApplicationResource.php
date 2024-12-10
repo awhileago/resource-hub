@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Posting;
 
+use App\Http\Resources\Info\UserInformationResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class PostingApplicationResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->when(! $this->relationLoaded('user'), $this->user_id),
-            'user' => $this->whenLoaded('user'),
+            'user' => new UserInformationResource($this->whenLoaded('user')),
             'posting_id' => $this->when(! $this->relationLoaded('posting'), $this->posting_id),
             'posting' => $this->whenLoaded('posting'),
             'is_save' => $this->is_save,
